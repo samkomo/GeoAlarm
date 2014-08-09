@@ -20,6 +20,8 @@
     <string name="details_origin_point">Pick Point of Origin</string>
     <string name="details_destination_point">Pick Destination Point</string>
     <string name="detail_items">List of Items to CrossCheck</string>
+    <string name="trigger_radius">Set Trigger Radius</string>
+    <string name="save_alarm_details">Save</string>
     
     
 </resources>

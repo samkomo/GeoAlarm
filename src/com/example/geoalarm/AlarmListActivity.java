@@ -1,76 +1,108 @@
 package com.example.geoalarm;
 
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
+import com.example.controllers.AlarmListAdapter;
+import com.example.controllers.AlarmManagerHelper;
+import com.example.models.AlarmDBHelper;
+import com.example.models.AlarmModel;
+
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+import android.view.Window;
 
-public class AlarmListActivity extends Activity {
+public class AlarmListActivity extends ListActivity {
 
+	private AlarmListAdapter mAdapter;
+	private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
+	private Context mContext;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mContext = this;
+		
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		
 		setContentView(R.layout.activity_alarm_list);
 
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
+		mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
+		
+		setListAdapter(mAdapter);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.alarm_list, menu);
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		
-		switch (item.getItemId()) {
-		case R.id.action_add_new_alarm:
-			Intent intent = new Intent(this, AlarmDetailsActivity.class);
-			startActivity(intent);
-			break;
 
-		default:
-			break;
+		switch (item.getItemId()) {
+			case R.id.action_add_new_alarm: {
+				startAlarmDetailsActivity(-1);
+				break;
+			}
 		}
-		int id = item.getItemId();
-		if (id == R.id.action_add_new_alarm) {
-			
-			return true;
-		}
+
 		return super.onOptionsItemSelected(item);
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_alarm_list,
-					container, false);
-			return rootView;
-		}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == RESULT_OK) {
+	        mAdapter.setAlarms(dbHelper.getAlarms());
+	        mAdapter.notifyDataSetChanged();
+	    }
+	}
+	
+	public void setAlarmEnabled(long id, boolean isEnabled) {
+		AlarmManagerHelper.cancelAlarms(this);
+		
+		AlarmModel model = dbHelper.getAlarm(id);
+		model.isEnabled = isEnabled;
+		dbHelper.updateAlarm(model);
+		
+		AlarmManagerHelper.setAlarms(this);
 	}
 
+	public void startAlarmDetailsActivity(long id) {
+		Intent intent = new Intent(this, AlarmDetailsActivity.class);
+		intent.putExtra("id", id);
+		startActivityForResult(intent, 0);
+	}
+	
+	public void deleteAlarm(long id) {
+		final long alarmId = id;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Please confirm")
+		.setTitle("Delete set?")
+		.setCancelable(true)
+		.setNegativeButton("Cancel", null)
+		.setPositiveButton("Ok", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//Cancel Alarms
+				AlarmManagerHelper.cancelAlarms(mContext);
+				//Delete alarm from DB by id
+				dbHelper.deleteAlarm(alarmId);
+				//Refresh the list of the alarms in the adaptor
+				mAdapter.setAlarms(dbHelper.getAlarms());
+				//Notify the adapter the data has changed
+				mAdapter.notifyDataSetChanged();
+				//Set the alarms
+				AlarmManagerHelper.setAlarms(mContext);
+			}
+		}).show();
+	}
 }

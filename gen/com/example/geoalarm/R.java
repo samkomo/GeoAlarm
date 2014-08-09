@@ -22,39 +22,49 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_action_add_alarm=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int holo_pressed_blue=0x7f020000;
+        public static final int ic_action_add_alarm=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int view_touch_selector=0x7f020003;
     }
     public static final class id {
-        public static final int action_add_new_alarm=0x7f080021;
-        public static final int action_settings=0x7f080020;
+        public static final int action_add_new_alarm=0x7f080029;
+        public static final int action_save_alarm_details=0x7f080028;
         public static final int alarm_details_items=0x7f080007;
-        public static final int alarm_details_label_friday=0x7f080012;
-        public static final int alarm_details_label_monday=0x7f08000d;
-        public static final int alarm_details_label_repeat_weekly=0x7f080009;
-        public static final int alarm_details_label_saturday=0x7f080013;
-        public static final int alarm_details_label_sunday=0x7f08000c;
-        public static final int alarm_details_label_thursday=0x7f080011;
-        public static final int alarm_details_label_tuesday=0x7f08000f;
-        public static final int alarm_details_label_wednesday=0x7f080010;
         public static final int alarm_details_name=0x7f080006;
-        public static final int alarm_details_repeat_friday=0x7f080019;
-        public static final int alarm_details_repeat_monday=0x7f080016;
-        public static final int alarm_details_repeat_saturday=0x7f08001a;
-        public static final int alarm_details_repeat_sunday=0x7f08000e;
-        public static final int alarm_details_repeat_thursday=0x7f080018;
-        public static final int alarm_details_repeat_tuesday=0x7f080017;
-        public static final int alarm_details_repeat_wednesday=0x7f080015;
-        public static final int alarm_details_repeat_weekly=0x7f08000b;
+        public static final int alarm_details_repeat_friday=0x7f080010;
+        public static final int alarm_details_repeat_monday=0x7f08000c;
+        public static final int alarm_details_repeat_saturday=0x7f080011;
+        public static final int alarm_details_repeat_sunday=0x7f08000b;
+        public static final int alarm_details_repeat_thursday=0x7f08000f;
+        public static final int alarm_details_repeat_tuesday=0x7f08000d;
+        public static final int alarm_details_repeat_wednesday=0x7f08000e;
+        public static final int alarm_details_repeat_weekly=0x7f080009;
         public static final int alarm_details_time_picker=0x7f080005;
-        public static final int alarm_label_tone=0x7f08001c;
-        public static final int alarm_label_tone_selection=0x7f08001d;
-        public static final int alarm_ringtone_container=0x7f08001b;
-        public static final int container=0x7f08001f;
+        public static final int alarm_item_friday=0x7f080023;
+        public static final int alarm_item_monday=0x7f08001f;
+        public static final int alarm_item_name=0x7f08001c;
+        public static final int alarm_item_saturday=0x7f080024;
+        public static final int alarm_item_sunday=0x7f08001e;
+        public static final int alarm_item_thursday=0x7f080022;
+        public static final int alarm_item_time=0x7f08001b;
+        public static final int alarm_item_toggle=0x7f08001d;
+        public static final int alarm_item_tuesday=0x7f080020;
+        public static final int alarm_item_wednesday=0x7f080021;
+        public static final int alarm_label_tone=0x7f080014;
+        public static final int alarm_label_tone_selection=0x7f080015;
+        public static final int alarm_ringtone_container=0x7f080013;
+        public static final int alarm_screen_button=0x7f080019;
+        public static final int alarm_screen_name=0x7f08001a;
+        public static final int alarm_screen_time=0x7f080018;
+        public static final int alarm_screen_title=0x7f080017;
+        public static final int custom_switch_button=0x7f080026;
+        public static final int custom_switch_label=0x7f080027;
+        public static final int custom_switch_layout=0x7f080025;
         public static final int divider1=0x7f08000a;
         public static final int divider2=0x7f080008;
-        public static final int divider3=0x7f08001e;
-        public static final int divider4=0x7f080014;
+        public static final int divider3=0x7f080016;
+        public static final int divider4=0x7f080012;
         public static final int divider6=0x7f080004;
         public static final int pick_destination_point=0x7f080001;
         public static final int pick_origin_point=0x7f080000;
@@ -64,8 +74,9 @@ public final class R {
     public static final class layout {
         public static final int activity_alarm_details=0x7f030000;
         public static final int activity_alarm_list=0x7f030001;
-        public static final int fragment_alarm_details=0x7f030002;
-        public static final int fragment_alarm_list=0x7f030003;
+        public static final int activity_alarm_screen=0x7f030002;
+        public static final int alarm_list_item=0x7f030003;
+        public static final int custom_switch=0x7f030004;
     }
     public static final class menu {
         public static final int alarm_details=0x7f070000;
@@ -89,7 +100,9 @@ public final class R {
         public static final int details_tuesday=0x7f050008;
         public static final int details_wednesday=0x7f050009;
         public static final int hello_world=0x7f050001;
+        public static final int save_alarm_details=0x7f050013;
         public static final int title_activity_alarm_details=0x7f050003;
+        public static final int trigger_radius=0x7f050012;
     }
     public static final class style {
         /** 
