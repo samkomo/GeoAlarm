@@ -18,6 +18,7 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 
 	public static final String ID = "id";
 	public static final String NAME = "name";
+	public static final String ITEMS = "items";
 	public static final String TIME_HOUR = "timeHour";
 	public static final String TIME_MINUTE = "timeMinute";
 	public static final String TONE = "alarmTone";
@@ -111,6 +112,7 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 		Intent intent = new Intent(context, AlarmService.class);
 		intent.putExtra(ID, model.id);
 		intent.putExtra(NAME, model.name);
+		intent.putExtra(ITEMS, model.items);
 		intent.putExtra(TIME_HOUR, model.timeHour);
 		intent.putExtra(TIME_MINUTE, model.timeMinute);
 		intent.putExtra(TONE, model.alarmTone.toString());
