@@ -4,6 +4,7 @@ import com.example.controllers.AlarmListAdapter;
 import com.example.controllers.AlarmManagerHelper;
 import com.example.models.AlarmDBHelper;
 import com.example.models.AlarmModel;
+import com.example.models.GlobalVars;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
