@@ -1,14 +1,5 @@
 package com.example.geoalarm;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -17,7 +8,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.controllers.GPSTracker;
 import com.example.geoalarm.R;
@@ -26,24 +16,17 @@ import com.example.models.GlobalVars;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-//import android.support.v7.app.ActionBarActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class GPSLocation extends Activity{
+public class GPSLocationOrigin extends Activity{
 	
 	GoogleMap map;
-//	private static LatLng TRM;
-//	private static LatLng Junction;
-//	private static LatLng Tajmal;
-//	private static LatLng TMall;
+
 	GPSTracker gpsTracker;
 	MarkerOptions locator_new;
 	
@@ -51,21 +34,8 @@ public class GPSLocation extends Activity{
 	LatLng newLatLng = null;
 	LatLng center_position;
 	
-//	private static final String url = MyPassedValues.url_malls_navdrawer;
 	private ProgressDialog pDialog;
-//	JSONParser jparser = new JSONParser();
-//	JSONArray  items;
-//	public static CustomListViewMallsAdapter jSONAdapter;
-//	
-//	
-//	public static String KEY_IMAGE = Home.KEY_IMAGE, 
-//							KEY_ID = Home.KEY_ID,
-//								KEY_NAME = Home.KEY_NAME,
-//									KEY_LONGITUDE = Home.KEY_LONGITUDE,
-//										KEY_LATITUDE = Home.KEY_LATITUDE,
-//											KEY_SNIPPET = Home.KEY_SNIPPET;
-	
-//	private double latitude = 0.00, longitude = 0.00;
+
 	public static double latitude, longitude;
 
 	@Override
@@ -154,16 +124,12 @@ public class GPSLocation extends Activity{
      * Async task class to get json by making HTTP call
      * */
     private class GetLatLongValues extends AsyncTask<Void, Void, Void> {
-    	
-    	JSONObject json;
-    	ArrayList<HashMap<String, String>> arrayListAllMarkerDetails = new ArrayList<>();
-    	   	
-    	
+    	    	
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            pDialog = new ProgressDialog(GPSLocation.this);
+            pDialog = new ProgressDialog(GPSLocationOrigin.this);
             pDialog.setMessage("Loading map, please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
@@ -190,9 +156,8 @@ public class GPSLocation extends Activity{
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
            
-
             BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
-            BitmapDescriptor icon_drag_new_location = BitmapDescriptorFactory.fromResource(R.drawable.marker);
+            
             center_position = new LatLng(latitude, longitude);
 			
 			//add marker for your GS location
@@ -224,7 +189,7 @@ public class GPSLocation extends Activity{
 
 	public void getGPSLocation() {
 		// TODO Auto-generated method stub
-		gpsTracker = new GPSTracker(GPSLocation.this);
+		gpsTracker = new GPSTracker(GPSLocationOrigin.this);
 		if (gpsTracker.canGetLocation()) { //gps enabled...
 			
 			latitude = gpsTracker.getLatitude();
@@ -260,7 +225,7 @@ public class GPSLocation extends Activity{
 		case R.id.action_done:
 			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
 			
-			Intent intent = new Intent(GPSLocation.this, AlarmDetailsActivity.class);
+			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
 			long id_global = AlarmDetailsActivity.id;
 			intent.putExtra("id", id_global);
 			
@@ -279,9 +244,13 @@ public class GPSLocation extends Activity{
 	private void getFinalLocationClicked() {
 		// TODO Auto-generated method stub
 		LatLng latlongfianl = locator_new.getPosition();
-		long latitude_picked = (long) latlongfianl.latitude;
-		long longitude_picked = (long) latlongfianl.longitude;
+		double latitude_picked = (double) latlongfianl.latitude;
+		GlobalVars.lat_origin = latitude_picked;
+		double longitude_picked = (double) latlongfianl.longitude;
+		GlobalVars.lon_origin = longitude_picked;
 		
+		Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
+		Log.i("ORIGIN: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
 	}
 
 	//menu items 

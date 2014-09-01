@@ -54,11 +54,11 @@ public class AlarmDetailsActivity extends Activity {
 		getActionBar().setTitle("Create New Alarm");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		initialize();
 		
 		onClickListenerForGPSButtons();
-=======
+//=======
 		timePicker = (TimePicker) findViewById(R.id.alarm_details_time_picker);
 		edtName = (EditText) findViewById(R.id.alarm_details_name);
 		edtItems = (EditText) findViewById(R.id.alarm_details_items);
@@ -71,7 +71,7 @@ public class AlarmDetailsActivity extends Activity {
 		chkFriday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_friday);
 		chkSaturday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_saturday);
 		txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
->>>>>>> 689f5457cd07876c0e6cf195629461c1a5181752
+//>>>>>>> 689f5457cd07876c0e6cf195629461c1a5181752
 		
 		id = getIntent().getExtras().getLong("id");
 		
@@ -115,24 +115,23 @@ public class AlarmDetailsActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocation.class);
+				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationOrigin.class);
 				
 				Toast.makeText(getApplicationContext(), "ORIGIN clicked..", Toast.LENGTH_LONG).show();
 				
 				startActivity(intent);
-//				Double gps_lat = GPSLocation.latitude;
-//				Double gps_lon = GPSLocation.longitude;
-				
-				
-//				Toast.makeText(getApplicationContext(), "LAT:: " + gps_lat + " LON:: " + gps_lon, Toast.LENGTH_LONG).show();
 			}
 		});
 		
 		btn_destination.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v) {				
+				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationDestination.class);
+				
 				Toast.makeText(getApplicationContext(), "DESTINATION", Toast.LENGTH_LONG).show();
+				
+				startActivity(intent);
 			}
 		});
 	}
