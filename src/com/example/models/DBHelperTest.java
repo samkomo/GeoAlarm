@@ -26,6 +26,10 @@ public class DBHelperTest extends AndroidTestCase {
 		model.name = "Test";
 		model.timeHour = 6;
 		model.timeMinute = 30;
+		model.items = "Item 1";
+		model.loc_destination = "0.0#0.0";
+		model.loc_destination = "0.0#0.0";
+		model.loc_radius = 10;
 		model.repeatWeekly = true;
 		model.setRepeatingDay(AlarmModel.SUNDAY, false);
 		model.setRepeatingDay(AlarmModel.MONDAY, true);
@@ -45,6 +49,9 @@ public class DBHelperTest extends AndroidTestCase {
 
 		assertEquals(model.name, returnModel.name);
 		assertEquals(model.items, returnModel.items);
+		assertEquals(model.loc_destination, returnModel.loc_destination);
+		assertEquals(model.loc_origin, returnModel.loc_origin);
+		assertEquals(model.loc_radius, returnModel.loc_radius);
 		assertEquals(model.timeHour, returnModel.timeHour);
 		assertEquals(model.timeMinute, returnModel.timeMinute);
 		assertEquals(model.repeatWeekly, returnModel.repeatWeekly);

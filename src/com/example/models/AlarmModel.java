@@ -19,6 +19,9 @@ public class AlarmModel {
 	public boolean repeatWeekly;
 	public Uri alarmTone;
 	public String name;
+	public String loc_origin;
+	public String loc_destination;
+	public int loc_radius;
 	public boolean isEnabled;
 	public String items;
 	

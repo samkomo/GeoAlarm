@@ -81,7 +81,7 @@
             android:layout_below="@+id/alarm_details_time_picker"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:ems="10"
+            android:ems="15"
             android:hint="@string/details_alarm_name" />
         
         <EditText

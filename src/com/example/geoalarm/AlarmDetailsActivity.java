@@ -4,7 +4,9 @@ import com.example.controllers.AlarmManagerHelper;
 import com.example.controllers.CustomSwitch;
 import com.example.models.AlarmDBHelper;
 import com.example.models.AlarmModel;
+import com.example.models.GlobalVars;
 
+import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -17,6 +19,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,8 +44,11 @@ public class AlarmDetailsActivity extends Activity {
 	private CustomSwitch chkSaturday;
 	private TextView txtToneSelection;
 	private Button btn_origin, btn_destination;
+	private SeekBar locRadiusSeakerBar = null;
+	private TextView radiusLabel;
 	
 	public static long id;
+	public static int p=0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,9 @@ public class AlarmDetailsActivity extends Activity {
 		chkFriday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_friday);
 		chkSaturday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_saturday);
 		txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
+		locRadiusSeakerBar = (SeekBar) findViewById(R.id.set_radius);
+		radiusLabel = (TextView) findViewById(R.id.radius_label);
+		
 //>>>>>>> 689f5457cd07876c0e6cf195629461c1a5181752
 		
 		id = getIntent().getExtras().getLong("id");
@@ -79,6 +89,17 @@ public class AlarmDetailsActivity extends Activity {
 			alarmDetails = new AlarmModel();
 		} else {
 			alarmDetails = dbHelper.getAlarm(id);
+			
+			String [] origin = GlobalVars.createArray(alarmDetails.loc_origin, "#");
+			String [] destination = GlobalVars.createArray(alarmDetails.loc_origin, "#");
+			
+
+			GlobalVars.lat_origin = Double.parseDouble(origin[0]);
+			GlobalVars.lon_origin = Double.parseDouble(origin[1]);
+			GlobalVars.lat_destination =  Double.parseDouble(destination[0]);
+			GlobalVars.lon_destination = Double.parseDouble(destination[1]);
+			
+			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lon_destination + " Log is: " + GlobalVars.lat_destination, Toast.LENGTH_LONG).show();
 			
 			timePicker.setCurrentMinute(alarmDetails.timeMinute);
 			timePicker.setCurrentHour(alarmDetails.timeHour);
@@ -96,6 +117,8 @@ public class AlarmDetailsActivity extends Activity {
 			chkSaturday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.SATURDAY));
 
 			txtToneSelection.setText(RingtoneManager.getRingtone(this, alarmDetails.alarmTone).getTitle(this));
+			
+			locRadiusSeakerBar.setProgress(alarmDetails.loc_radius);
 		}
 
 		final LinearLayout ringToneContainer = (LinearLayout) findViewById(R.id.alarm_ringtone_container);
@@ -106,6 +129,27 @@ public class AlarmDetailsActivity extends Activity {
 				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
 				startActivityForResult(intent , 1);
 			}
+		});
+		
+		locRadiusSeakerBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+		    @Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+		        // TODO Auto-generated method stub
+		    }
+
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		        // TODO Auto-generated method stub
+		    }
+
+		    @Override
+		    public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+		        // TODO Auto-generated method stub
+		        p=progress;
+		        radiusLabel.setText("Trigger Radius: "+p +" Meters");
+		        
+		    }
 		});
 	}
 	
@@ -118,7 +162,7 @@ public class AlarmDetailsActivity extends Activity {
 				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationOrigin.class);
 				
 				Toast.makeText(getApplicationContext(), "ORIGIN clicked..", Toast.LENGTH_LONG).show();
-				
+				GlobalVars.isOrigin = true;
 				startActivity(intent);
 			}
 		});
@@ -130,7 +174,7 @@ public class AlarmDetailsActivity extends Activity {
 				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationDestination.class);
 				
 				Toast.makeText(getApplicationContext(), "DESTINATION", Toast.LENGTH_LONG).show();
-				
+				GlobalVars.isOrigin = false;
 				startActivity(intent);
 			}
 		});
@@ -152,6 +196,7 @@ public class AlarmDetailsActivity extends Activity {
 		
 		btn_origin = (Button) findViewById(R.id.pick_origin_point);
 		btn_destination = (Button) findViewById(R.id.pick_destination_point);
+		locRadiusSeakerBar = (SeekBar) findViewById(R.id.set_radius);
 	}
 
 	@Override
@@ -200,6 +245,9 @@ public class AlarmDetailsActivity extends Activity {
 				AlarmManagerHelper.setAlarms(this);
 				
 				setResult(RESULT_OK);
+				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
+				intent.putExtra("id", id);
+				startActivityForResult(intent, 0);
 				finish();
 			}
 		}
@@ -212,6 +260,9 @@ public class AlarmDetailsActivity extends Activity {
 		alarmDetails.timeHour = timePicker.getCurrentHour().intValue();
 		alarmDetails.name = edtName.getText().toString();
 		alarmDetails.items = edtItems.getText().toString();
+		alarmDetails.loc_origin = GlobalVars.lat_origin+"#"+GlobalVars.lon_origin+"#";
+		alarmDetails.loc_destination = GlobalVars.lat_destination+"#"+GlobalVars.lon_destination+"#";
+		alarmDetails.loc_radius = p;
 		alarmDetails.repeatWeekly = chkWeekly.isChecked();	
 		alarmDetails.setRepeatingDay(AlarmModel.SUNDAY, chkSunday.isChecked());	
 		alarmDetails.setRepeatingDay(AlarmModel.MONDAY, chkMonday.isChecked());	
