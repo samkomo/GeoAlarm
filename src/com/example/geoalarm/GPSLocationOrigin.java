@@ -1,21 +1,24 @@
 package com.example.geoalarm;
 
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.controllers.GPSTracker;
+import com.example.services.GPSTracker;
 import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +39,9 @@ public class GPSLocationOrigin extends Activity{
 	
 	private ProgressDialog pDialog;
 
-	public static double latitude, longitude;
+	public static double latitude, longitude;	
+	
+	public static String distance_from_php = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +80,7 @@ public class GPSLocationOrigin extends Activity{
 					// TODO Auto-generated method stub
 					
 					BitmapDescriptor icon_drag_new_location = BitmapDescriptorFactory.fromResource(R.drawable.marker);
-					BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
+					
 					
 					if (marker_added) { //if this is the 1st time to click on map i.e add marker location (origin or destination)...
 						
@@ -100,17 +105,20 @@ public class GPSLocationOrigin extends Activity{
 												.snippet("Drag me 1")
 												.icon(icon_drag_new_location);
 						
-						//add marker for your GS location
-						map.addMarker(new MarkerOptions()
-											.position(center_position)
-											.title("ME")
-											.snippet("I am here")
-											.icon(icon_gps_current_location));
 						
 						map.addMarker(locator_new).setDraggable(true);
 					}					
 				}	
-			});		
+			});		// END of onMapClickListener
+			
+			map.setOnMyLocationChangeListener(new OnMyLocationChangeListener() {
+				
+				@Override
+				public void onMyLocationChange(Location arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 	}
 
 	private void initialise() {
@@ -155,9 +163,7 @@ public class GPSLocationOrigin extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-           
-            BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
-            
+                                   
             center_position = new LatLng(latitude, longitude);
 			
             map.setMyLocationEnabled(true);
@@ -225,14 +231,27 @@ public class GPSLocationOrigin extends Activity{
 		switch (id) {
 		
 		case R.id.action_done:
-			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
+			
+			//get the location of the marker clicked..
+			getFinalLocationClicked();
+			
+//			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
+
+//			gpsTracker.showSettingsAlertPassMessage("The distance is:: " + Float.toString(GPSTracker.results[0]));
+			
+//			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
+			
+//			CalculatedDistanceAsyncTask distCalc = new CalculatedDistanceAsyncTask();
+//	    	distCalc.execute();
+			
+			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistance));
+	    	
 			
 			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
 			long id_global = AlarmDetailsActivity.id;
 			intent.putExtra("id", id_global);
 			
-			//get the location of the marker clicked..
-			getFinalLocationClicked();
+			
 			
 			startActivityForResult(intent, 0);
 			
@@ -258,5 +277,7 @@ public class GPSLocationOrigin extends Activity{
 	//menu items 
 	//END
 	
+	
+
 
 }

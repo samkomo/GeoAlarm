@@ -1,4 +1,6 @@
-package com.example.controllers;
+package com.example.services;
+
+import com.example.models.GlobalVars;
 
 import android.app.AlertDialog;
 import android.app.Service;
@@ -29,6 +31,17 @@ public class GPSTracker extends Service implements LocationListener {
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
+    
+	GPSTracker gpsTracker;
+	double gpsLatitude, gpsLongitude;
+	public static float[] results = new float[5];
+	public static double mStartLat;
+	public static double mStartLon;
+	public static double myGPSLat;
+	public static double myGPSLon;
+	public static String distance_from_php = null;
+	
+	public static double theDistance;
  
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -177,12 +190,87 @@ public class GPSTracker extends Service implements LocationListener {
         // Showing Alert Message
         alertDialog.show();
     }
+    
+    /**
+     * Function to show alert dialog with passed message
+     * On pressing Settings button will lauch Settings Options
+     * */
+    public void showSettingsAlertPassMessage(String message){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+      
+        // Setting Dialog Title
+        alertDialog.setTitle("Alert:Distance changed");
+  
+        // Setting Dialog Message
+        alertDialog.setMessage(message);
+  
+        // On pressing Settings button
+//        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog,int which) {
+//                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                mContext.startActivity(intent);
+//            }
+//        });
+  
+        // on pressing cancel button
+        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+            }
+        });
+  
+        // Showing Alert Message
+        alertDialog.show();
+    }
  
     @Override
     public void onLocationChanged(Location location) {
     	
-//    	
+    	gpsTracker = new GPSTracker(GPSTracker.this);
+    	
+//    	get the new location, poll for the lat and longitude, get distance, calculate with
+    	mStartLat = GlobalVars.lat_origin;
+    	mStartLon = GlobalVars.lon_origin;
+//    	double myGPSLat = gpsLatitude;
+//    	double myGPSLon = gpsLongitude;
+    	myGPSLat = location.getLatitude();
+    	myGPSLon = location.getLongitude();
+    	results = new float[5];
+    	
+    	
+    	Location.distanceBetween(myGPSLat, myGPSLon, mStartLat, mStartLon, results);
+    	
+    	
+    	Location loc = new Location("LocationOrigin");
+    	loc.setLatitude(mStartLat);
+    	loc.setLongitude(mStartLon);
+    	    	
+//    	theDistance = (location.distanceTo(loc))/1000;
+    	
+    	theDistance = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
+//    	theDistance = CalculationByDistance(-1.038147, 37.082634, -1.281269, 36.822214);
+    	
+
     }
+    
+    public double CalculationByDistance(double initialLat, double initialLong, double finalLat, double finalLong){
+        /*PRE: All the input values are in radians!*/
+
+        double earthRadius = 6371; //In Km if you want the distance in km
+        
+        double lat1 = initialLat;
+        double lon1 = initialLong;
+        double lat2 = finalLat;
+        double lon2 = finalLong;
+        double lat1Rad = Math.toRadians(lat1);
+        double lat2Rad = Math.toRadians(lat2);
+
+        double deltaLonRad = Math.toRadians(lon2 - lon1);
+
+        double distance = Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(deltaLonRad)) * earthRadius;
+        return distance*1000; //distance in meters
+
+    }    
  
     @Override
     public void onProviderDisabled(String provider) {
@@ -200,5 +288,7 @@ public class GPSTracker extends Service implements LocationListener {
     public IBinder onBind(Intent arg0) {
         return null;
     }
+    
+   
  
 }

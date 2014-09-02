@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.controllers.GPSTracker;
+import com.example.services.GPSTracker;
 import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
@@ -100,12 +100,12 @@ public class GPSLocationDestination extends Activity{
 												.snippet("Drag me 1")
 												.icon(icon_drag_new_location);
 						
-						//add marker for your GS location
-						map.addMarker(new MarkerOptions()
-											.position(center_position)
-											.title("ME")
-											.snippet("I am here")
-											.icon(icon_gps_current_location));
+//						//add marker for your GS location
+//						map.addMarker(new MarkerOptions()
+//											.position(center_position)
+//											.title("ME")
+//											.snippet("I am here")
+//											.icon(icon_gps_current_location));
 						
 						map.addMarker(locator_new).setDraggable(true);
 					}					
@@ -159,13 +159,15 @@ public class GPSLocationDestination extends Activity{
             BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
             
             center_position = new LatLng(latitude, longitude);
+            
+            map.setMyLocationEnabled(true);
 			
-			//add marker for your GS location
-			map.addMarker(new MarkerOptions()
-								.position(center_position)
-								.title("ME")
-								.snippet("I am here")
-								.icon(icon_gps_current_location));	
+//			//add marker for your GS location
+//			map.addMarker(new MarkerOptions()
+//								.position(center_position)
+//								.title("ME")
+//								.snippet("I am here")
+//								.icon(icon_gps_current_location));	
 			
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 								.target(center_position) // Sets the center of the map to
