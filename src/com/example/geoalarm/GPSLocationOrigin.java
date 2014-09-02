@@ -1,6 +1,9 @@
 package com.example.geoalarm;
 
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -21,6 +24,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +34,7 @@ public class GPSLocationOrigin extends Activity{
 	
 	GoogleMap map;
 
-	GPSTracker gpsTracker;
+	GPSTracker gpsTracker, gpsTracker2;
 	MarkerOptions locator_new;
 	
 	boolean marker_added = false;
@@ -42,6 +46,12 @@ public class GPSLocationOrigin extends Activity{
 	public static double latitude, longitude;	
 	
 	public static String distance_from_php = null;
+	
+	Timer timer;
+	TimerTask timerTask;
+    final Handler handler = new Handler();
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,48 @@ public class GPSLocationOrigin extends Activity{
 		
 		myMapListener();	
 		
+		//SET TIMER
+		startTimer();
+		
+	}
+
+	public void startTimer() {
+		// TODO Auto-generated method stub
+		timer = new Timer();
+		
+		//initialize the TimerTask's job
+		initializeTimerTask();
+		
+		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
+		timer.schedule(timerTask, 20000, 15000);
+	}
+
+	public void initializeTimerTask() {
+		// TODO Auto-generated method stub
+		timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				handler.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						String dist = Double.toString(GPSTracker.theDistance);
+						
+						//show the toast
+						int duration = Toast.LENGTH_SHORT;  
+						Toast toast = Toast.makeText(getApplicationContext(), "Distance is (timer task): " + dist, duration);
+						toast.show();
+						
+						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
+
+					}
+				});
+			}
+		};
 	}
 
 	private void populateLatsAndLongs() {
