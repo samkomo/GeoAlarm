@@ -5,10 +5,18 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="13"
         android:targetSdkVersion="19" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -30,6 +38,8 @@
         </activity>
         
         <activity android:name="com.example.controllers.AlarmScreen" />
+        <activity android:name="com.example.geoalarm.GPSLocationOrigin" />
+        <activity android:name="com.example.geoalarm.GPSLocationDestination" />
         
         <service android:name="com.example.services.AlarmService" 
             android:enabled="true"/>
@@ -39,6 +49,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        
+        <meta-data
+		    android:name="com.google.android.maps.v2.API_KEY"
+		    android:value="AIzaSyDixdbOminUqCshNbgvoK-EcvQgik2Lzmg"/>
+        <meta-data
+		    android:name="com.google.android.gms.version"
+		    android:value="@integer/google_play_services_version"/>
         
     </application>
 

@@ -4,33 +4,50 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/alarm_screen_title"
+        android:id="@+id/alarm_screen_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:text="Reminder!"
-        android:textSize="38dp" />
-
+        android:layout_marginTop="18dp"
+        android:text="00 : 00"
+        android:textSize="42dp" />
+    
     <TextView
-        android:id="@+id/alarm_screen_time"
+        android:id="@+id/alarm_screen_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/alarm_screen_button"
-        android:layout_below="@+id/alarm_screen_title"
-        android:layout_marginTop="28dp"
-        android:text="00 : 00"
-        android:textSize="52dp" />
+        android:layout_below="@+id/alarm_screen_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Reminder!" 
+        android:textSize="18dp" />
+    
+    <View
+            android:id="@+id/divider6"
+            style="@style/Divider"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/alarm_screen_title" />
+
+    
 
     <TextView
         android:id="@+id/alarm_screen_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm_screen_time"
+        android:layout_below="@+id/divider6"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:text="Alarm name" />
+        android:layout_marginTop="20dp"
+        android:text="Alarm name"
+        android:textSize="28dp" />
+
+    <View
+            android:id="@+id/divider7"
+            style="@style/Divider"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/alarm_screen_button" />
     
     <Button
         android:id="@+id/alarm_screen_button"
@@ -38,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="106dp"
+        android:layout_marginBottom="15dp"
         android:text="Dismiss"
         android:textSize="38dp" />
 
