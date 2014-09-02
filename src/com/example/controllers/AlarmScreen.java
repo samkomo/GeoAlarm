@@ -35,16 +35,12 @@ public class AlarmScreen extends Activity {
 		this.setContentView(R.layout.activity_alarm_screen);
 
 		String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-		String items = getIntent().getStringExtra(AlarmManagerHelper.ITEMS);
 		int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
 		int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
 		String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
 		
 		TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
-		tvName.setText(items);
-		
-		TextView tvTitle = (TextView) findViewById(R.id.alarm_screen_title);
-		tvTitle.setText(name+" Reminder!, check that you have the following items");
+		tvName.setText(name);
 		
 		TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
 		tvTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
@@ -58,7 +54,6 @@ public class AlarmScreen extends Activity {
 				finish();
 			}
 		});
-		
 
 		//Play alarm tone
 		mPlayer = new MediaPlayer();
@@ -113,7 +108,6 @@ public class AlarmScreen extends Activity {
 			mWakeLock = pm.newWakeLock((PowerManager.FULL_WAKE_LOCK | PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
 		}
 
-		
 		if (!mWakeLock.isHeld()) {
 			mWakeLock.acquire();
 			Log.i(TAG, "Wakelock aquired!!");
@@ -129,5 +123,4 @@ public class AlarmScreen extends Activity {
 			mWakeLock.release();
 		}
 	}
-	
 }

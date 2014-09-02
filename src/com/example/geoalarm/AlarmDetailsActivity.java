@@ -14,12 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class AlarmDetailsActivity extends Activity {
 	
@@ -29,7 +27,6 @@ public class AlarmDetailsActivity extends Activity {
 	
 	private TimePicker timePicker;
 	private EditText edtName;
-	private EditText edtItems;
 	private CustomSwitch chkWeekly;
 	private CustomSwitch chkSunday;
 	private CustomSwitch chkMonday;
@@ -39,9 +36,6 @@ public class AlarmDetailsActivity extends Activity {
 	private CustomSwitch chkFriday;
 	private CustomSwitch chkSaturday;
 	private TextView txtToneSelection;
-	private Button btn_origin, btn_destination;
-	
-	public static long id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +48,8 @@ public class AlarmDetailsActivity extends Activity {
 		getActionBar().setTitle("Create New Alarm");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-//<<<<<<< HEAD
-		initialize();
-		
-		onClickListenerForGPSButtons();
-//=======
 		timePicker = (TimePicker) findViewById(R.id.alarm_details_time_picker);
 		edtName = (EditText) findViewById(R.id.alarm_details_name);
-		edtItems = (EditText) findViewById(R.id.alarm_details_items);
 		chkWeekly = (CustomSwitch) findViewById(R.id.alarm_details_repeat_weekly);
 		chkSunday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_sunday);
 		chkMonday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_monday);
@@ -71,9 +59,8 @@ public class AlarmDetailsActivity extends Activity {
 		chkFriday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_friday);
 		chkSaturday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_saturday);
 		txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
-//>>>>>>> 689f5457cd07876c0e6cf195629461c1a5181752
 		
-		id = getIntent().getExtras().getLong("id");
+		long id = getIntent().getExtras().getLong("id");
 		
 		if (id == -1) {
 			alarmDetails = new AlarmModel();
@@ -84,7 +71,6 @@ public class AlarmDetailsActivity extends Activity {
 			timePicker.setCurrentHour(alarmDetails.timeHour);
 			
 			edtName.setText(alarmDetails.name);
-			edtItems.setText(alarmDetails.items);
 			
 			chkWeekly.setChecked(alarmDetails.repeatWeekly);
 			chkSunday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.SUNDAY));
@@ -109,51 +95,6 @@ public class AlarmDetailsActivity extends Activity {
 		});
 	}
 	
-	private void onClickListenerForGPSButtons() {
-		// TODO Auto-generated method stub
-		btn_origin.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationOrigin.class);
-				
-				Toast.makeText(getApplicationContext(), "ORIGIN clicked..", Toast.LENGTH_LONG).show();
-				
-				startActivity(intent);
-			}
-		});
-		
-		btn_destination.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {				
-				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationDestination.class);
-				
-				Toast.makeText(getApplicationContext(), "DESTINATION", Toast.LENGTH_LONG).show();
-				
-				startActivity(intent);
-			}
-		});
-	}
-
-	private void initialize() {
-		// TODO Auto-generated method stub
-		timePicker = (TimePicker) findViewById(R.id.alarm_details_time_picker);
-		edtName = (EditText) findViewById(R.id.alarm_details_name);
-		chkWeekly = (CustomSwitch) findViewById(R.id.alarm_details_repeat_weekly);
-		chkSunday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_sunday);
-		chkMonday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_monday);
-		chkTuesday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_tuesday);
-		chkWednesday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_wednesday);
-		chkThursday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_thursday);
-		chkFriday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_friday);
-		chkSaturday = (CustomSwitch) findViewById(R.id.alarm_details_repeat_saturday);
-		txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
-		
-		btn_origin = (Button) findViewById(R.id.pick_origin_point);
-		btn_destination = (Button) findViewById(R.id.pick_destination_point);
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -211,7 +152,6 @@ public class AlarmDetailsActivity extends Activity {
 		alarmDetails.timeMinute = timePicker.getCurrentMinute().intValue();
 		alarmDetails.timeHour = timePicker.getCurrentHour().intValue();
 		alarmDetails.name = edtName.getText().toString();
-		alarmDetails.items = edtItems.getText().toString();
 		alarmDetails.repeatWeekly = chkWeekly.isChecked();	
 		alarmDetails.setRepeatingDay(AlarmModel.SUNDAY, chkSunday.isChecked());	
 		alarmDetails.setRepeatingDay(AlarmModel.MONDAY, chkMonday.isChecked());	
