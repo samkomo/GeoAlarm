@@ -160,12 +160,14 @@ public class GPSLocationOrigin extends Activity{
             
             center_position = new LatLng(latitude, longitude);
 			
+            map.setMyLocationEnabled(true);
+            
 			//add marker for your GS location
-			map.addMarker(new MarkerOptions()
-								.position(center_position)
-								.title("ME")
-								.snippet("I am here")
-								.icon(icon_gps_current_location));	
+//			map.addMarker(new MarkerOptions()
+//								.position(center_position)
+//								.title("ME")
+//								.snippet("I am here")
+//								.icon(icon_gps_current_location));	
 			
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 								.target(center_position) // Sets the center of the map to
