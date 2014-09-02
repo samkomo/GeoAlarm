@@ -239,13 +239,14 @@ public class GPSLocationOrigin extends Activity{
 
 //			gpsTracker.showSettingsAlertPassMessage("The distance is:: " + Float.toString(GPSTracker.results[0]));
 			
-//			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
+			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
 			
 //			CalculatedDistanceAsyncTask distCalc = new CalculatedDistanceAsyncTask();
 //	    	distCalc.execute();
 			
 			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistance));
 	    	
+			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
 			
 			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
 			long id_global = AlarmDetailsActivity.id;
@@ -271,7 +272,7 @@ public class GPSLocationOrigin extends Activity{
 		GlobalVars.lon_origin = longitude_picked;
 		
 		Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
-		Log.i("ORIGIN: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
+//		Log.i("ORIGIN: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
 	}
 
 	//menu items 
