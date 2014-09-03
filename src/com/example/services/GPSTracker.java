@@ -239,14 +239,18 @@ public class GPSTracker extends Service implements LocationListener {
     	loc.setLatitude(mStartLat);
     	loc.setLongitude(mStartLon);
     	
-    	Log.i("VALUES used:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
-    	Log.i("VALUES used:ORIGIN: ", "lat: " + mStartLat + " lon: " + mStartLon);
+    	Log.i("ORIGIN Vals:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
+    	Log.i("ORIGIN Vals Origin: ", "lat: " + mStartLat + " lon: " + mStartLon);
+    	
+    	Log.i("DEST Vals:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
+    	Log.i("DEST Vals Origin: ", "lat: " + mEndLat + " lon: " + mEndLon);
     	    	    	
     	theDistanceFromOrigin = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
 //    	theDistance = CalculationByDistance(-1.038147, 37.082634, -1.281269, 36.822214);
     	theDistanceFromDestination = CalculationByDistance(mEndLat, mEndLon, myGPSLat, myGPSLon);
     	
     	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromOrigin);
+    	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromDestination);
     	
 
     }
