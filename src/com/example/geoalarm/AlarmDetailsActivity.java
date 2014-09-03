@@ -91,7 +91,7 @@ public class AlarmDetailsActivity extends Activity {
 			alarmDetails = dbHelper.getAlarm(id);
 			
 			String [] origin = GlobalVars.createArray(alarmDetails.loc_origin, "#");
-			String [] destination = GlobalVars.createArray(alarmDetails.loc_origin, "#");
+			String [] destination = GlobalVars.createArray(alarmDetails.loc_destination, "#");
 			
 
 			GlobalVars.lat_origin = Double.parseDouble(origin[0]);
@@ -99,8 +99,9 @@ public class AlarmDetailsActivity extends Activity {
 			GlobalVars.lat_destination =  Double.parseDouble(destination[0]);
 			GlobalVars.lon_destination = Double.parseDouble(destination[1]);
 			
-			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lon_destination + " Log is: " + GlobalVars.lat_destination, Toast.LENGTH_LONG).show();
-			
+//			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lon_destination + " Log is: " + GlobalVars.lat_destination, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, alarmDetails.loc_origin  + " +++++ " + alarmDetails.loc_destination, Toast.LENGTH_LONG).show();
+
 			timePicker.setCurrentMinute(alarmDetails.timeMinute);
 			timePicker.setCurrentHour(alarmDetails.timeHour);
 			
