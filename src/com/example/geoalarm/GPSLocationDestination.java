@@ -43,10 +43,7 @@ public class GPSLocationDestination extends Activity{
 
 	public static double latitude, longitude;
 	
-	Timer timer;
-	TimerTask timerTask;
-    final Handler handler = new Handler();
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -231,12 +228,12 @@ public class GPSLocationDestination extends Activity{
 			//get the location of the marker clicked..
 			getFinalLocationClicked();
 			
-			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromDestination));
+//			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromDestination));
 			
 			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
 			//*** Start timerTask to calculcate distance
 			//SET TIMER
-			startTimer();
+//			startTimer();
 			
 			Intent intent = new Intent(GPSLocationDestination.this, AlarmDetailsActivity.class);
 			long id_global = AlarmDetailsActivity.id;
@@ -251,43 +248,7 @@ public class GPSLocationDestination extends Activity{
 		}
 	}
 
-	private void startTimer() {
-		// TODO Auto-generated method stub
-		timer = new Timer();
-		
-		//initialize the TimerTask's job
-		initializeTimerTask();
-		
-		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
-		timer.schedule(timerTask, 20000, 22000);
-	}
-
-	private void initializeTimerTask() {
-		// TODO Auto-generated method stub
-		timerTask = new TimerTask() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				
-				handler.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						String dist = Double.toString(GPSTracker.theDistanceFromDestination);
-						
-						//show the toast
-						int duration = Toast.LENGTH_SHORT;  
-						Toast toast = Toast.makeText(getApplicationContext(), "Distance to Dest. (timer task): " + dist, duration);
-						toast.show();						
-						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
-
-					}
-				});
-			}
-		};
-	}
+	
 
 	private void getFinalLocationClicked() {
 		// TODO Auto-generated method stub
