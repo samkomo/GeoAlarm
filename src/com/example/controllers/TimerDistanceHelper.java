@@ -102,7 +102,10 @@ public class TimerDistanceHelper {
 			   	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromOrigin);
 			   	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromDestination);
 			   	
+			   	Log.i("loc_radius: ", "distance = " + alarm.loc_radius);
+			   	
 			   	if ( theDistanceFromOrigin > alarm.loc_radius ) {
+			   		Log.i("loc_radius: ", "distance = " + alarm.loc_radius);
 //			   		PendingIntent pIntent = createPendingIntent(ctxt, alarm);
 			   		Intent intent = new Intent(ctxt, AlarmScreen.class);
 					intent.putExtra(ID, alarm.id);
