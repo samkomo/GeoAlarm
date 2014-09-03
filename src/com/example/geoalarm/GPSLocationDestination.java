@@ -243,7 +243,7 @@ public class GPSLocationDestination extends Activity{
 			intent.putExtra("id", id_global);
 			
 			startActivityForResult(intent, 0);
-			
+			finish();
 			return true;
 		
 		default:
@@ -291,14 +291,27 @@ public class GPSLocationDestination extends Activity{
 
 	private void getFinalLocationClicked() {
 		// TODO Auto-generated method stub
-		LatLng latlongfianl = locator_new.getPosition();
-		double latitude_picked = (double) latlongfianl.latitude;
-		GlobalVars.lat_destination = latitude_picked;
-		double longitude_picked = (double) latlongfianl.longitude;
-		GlobalVars.lon_destination = longitude_picked;
+		if (GlobalVars.isOrigin) {
+			LatLng latlongfianl = locator_new.getPosition();
+			double latitude_picked = (double) latlongfianl.latitude;
+			GlobalVars.lat_destination = latitude_picked;
+			double longitude_picked = (double) latlongfianl.longitude;
+			GlobalVars.lon_destination = longitude_picked;
+			
+			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination, Toast.LENGTH_LONG).show();
+			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination);
+		} else {
+			LatLng latlongfianl = locator_new.getPosition();
+			double latitude_picked = (double) latlongfianl.latitude;
+			GlobalVars.lat_origin = latitude_picked;
+			double longitude_picked = (double) latlongfianl.longitude;
+			GlobalVars.lon_origin = longitude_picked;
+			
+			Toast.makeText(this, "DESTINATION:: Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination, Toast.LENGTH_LONG).show();
+			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination);
+
+		}
 		
-		Toast.makeText(this, "DESTINATION:: Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination, Toast.LENGTH_LONG).show();
-		Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination);
 	}
 
 	//menu items 

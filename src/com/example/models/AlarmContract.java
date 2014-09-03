@@ -10,6 +10,9 @@ public final class AlarmContract {
 		public static final String TABLE_NAME = "alarm";
 		public static final String COLUMN_NAME_ALARM_NAME = "name";
 		public static final String COLUMN_NAME_ALARM_ITEMS = "items";
+		public static final String COLUMN_NAME_ALARM_ORIGIN = "origin";
+		public static final String COLUMN_NAME_ALARM_DESTINATION = "destination";
+		public static final String COLUMN_NAME_ALARM_RADIUS = "radius";
 		
 		public static final String COLUMN_NAME_ALARM_TIME_HOUR = "hour";
 		public static final String COLUMN_NAME_ALARM_TIME_MINUTE = "minute";

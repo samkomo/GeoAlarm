@@ -21,6 +21,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 			Alarm._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 			Alarm.COLUMN_NAME_ALARM_NAME + " TEXT," +
 			Alarm.COLUMN_NAME_ALARM_ITEMS + " TEXT," +
+			Alarm.COLUMN_NAME_ALARM_ORIGIN + " TEXT," +
+			Alarm.COLUMN_NAME_ALARM_DESTINATION + " TEXT," +
+			Alarm.COLUMN_NAME_ALARM_RADIUS + " INTEGER," +
 			Alarm.COLUMN_NAME_ALARM_TIME_HOUR + " INTEGER," +
 			Alarm.COLUMN_NAME_ALARM_TIME_MINUTE + " INTEGER," +
 			Alarm.COLUMN_NAME_ALARM_REPEAT_DAYS + " TEXT," +
@@ -53,6 +56,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 		model.id = c.getLong(c.getColumnIndex(Alarm._ID));
 		model.name = c.getString(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_NAME));
 		model.items = c.getString(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_ITEMS));
+		model.loc_destination = c.getString(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_DESTINATION));
+		model.loc_origin = c.getString(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_ORIGIN));
+		model.loc_radius = c.getInt(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_RADIUS));
 		model.timeHour = c.getInt(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_TIME_HOUR));
 		model.timeMinute = c.getInt(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_TIME_MINUTE));
 		model.repeatWeekly = c.getInt(c.getColumnIndex(Alarm.COLUMN_NAME_ALARM_REPEAT_WEEKLY)) == 0 ? false : true;
@@ -71,6 +77,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
         values.put(Alarm.COLUMN_NAME_ALARM_NAME, model.name);
         values.put(Alarm.COLUMN_NAME_ALARM_ITEMS, model.items);
+        values.put(Alarm.COLUMN_NAME_ALARM_ORIGIN, model.loc_origin);
+        values.put(Alarm.COLUMN_NAME_ALARM_DESTINATION, model.loc_destination);
+        values.put(Alarm.COLUMN_NAME_ALARM_RADIUS, model.loc_radius);
         values.put(Alarm.COLUMN_NAME_ALARM_TIME_HOUR, model.timeHour);
         values.put(Alarm.COLUMN_NAME_ALARM_TIME_MINUTE, model.timeMinute);
         values.put(Alarm.COLUMN_NAME_ALARM_REPEAT_WEEKLY, model.repeatWeekly);
