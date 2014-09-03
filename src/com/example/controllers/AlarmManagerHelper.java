@@ -44,7 +44,6 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 				calendar.set(Calendar.HOUR_OF_DAY, alarm.timeHour);
 				calendar.set(Calendar.MINUTE, alarm.timeMinute);
 				calendar.set(Calendar.SECOND, 00);
-
 				//Find next time to set
 				final int nowDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
 				final int nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -84,6 +83,7 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 	@SuppressLint("NewApi")
 	private static void setAlarm(Context context, Calendar calendar, PendingIntent pIntent) {
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 			alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
 		} else {

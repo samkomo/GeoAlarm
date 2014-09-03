@@ -1,5 +1,8 @@
 package com.example.geoalarm;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -18,6 +21,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +42,10 @@ public class GPSLocationDestination extends Activity{
 	private ProgressDialog pDialog;
 
 	public static double latitude, longitude;
+	
+	Timer timer;
+	TimerTask timerTask;
+    final Handler handler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +60,7 @@ public class GPSLocationDestination extends Activity{
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialise();
-		
-		setTitle("Mall Locations");
-		
+				
 		populateLatsAndLongs();
 		
 		myMapListener();	
@@ -106,14 +112,7 @@ public class GPSLocationDestination extends Activity{
 												.title("DRAG origin")
 												.snippet("Drag me 1")
 												.icon(icon_drag_new_location);
-						
-//						//add marker for your GS location
-//						map.addMarker(new MarkerOptions()
-//											.position(center_position)
-//											.title("ME")
-//											.snippet("I am here")
-//											.icon(icon_gps_current_location));
-						
+												
 						map.addMarker(locator_new).setDraggable(true);
 					}					
 				}	
@@ -152,7 +151,7 @@ public class GPSLocationDestination extends Activity{
     			
     		} catch (Exception e) {
     			// TODO: handle exception
-    			Log.e("log_tag", "Error kupitisha data when getting data for markers" + e.toString());
+    			Log.e("log_tag_dest", "Error kupitisha data when getting data for markers" + e.toString());
     		}
     		
     		
@@ -162,19 +161,10 @@ public class GPSLocationDestination extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-           
-            BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
-            
+                       
             center_position = new LatLng(latitude, longitude);
             
             map.setMyLocationEnabled(true);
-			
-//			//add marker for your GS location
-//			map.addMarker(new MarkerOptions()
-//								.position(center_position)
-//								.title("ME")
-//								.snippet("I am here")
-//								.icon(icon_gps_current_location));	
 			
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 								.target(center_position) // Sets the center of the map to
@@ -236,14 +226,21 @@ public class GPSLocationDestination extends Activity{
 			return true;
 		
 		case R.id.action_done:
-			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
+			
+			//get the location of the marker clicked..
+			getFinalLocationClicked();
+			
+			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromDestination));
+			
+			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
+			//*** Start timerTask to calculcate distance
+			//SET TIMER
+			startTimer();
 			
 			Intent intent = new Intent(GPSLocationDestination.this, AlarmDetailsActivity.class);
 			long id_global = AlarmDetailsActivity.id;
 			intent.putExtra("id", id_global);
-			
-			//get the location of the marker clicked..
-			getFinalLocationClicked();
 			
 			startActivityForResult(intent, 0);
 			
@@ -252,6 +249,44 @@ public class GPSLocationDestination extends Activity{
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void startTimer() {
+		// TODO Auto-generated method stub
+		timer = new Timer();
+		
+		//initialize the TimerTask's job
+		initializeTimerTask();
+		
+		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
+		timer.schedule(timerTask, 20000, 22000);
+	}
+
+	private void initializeTimerTask() {
+		// TODO Auto-generated method stub
+		timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				handler.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						String dist = Double.toString(GPSTracker.theDistanceFromDestination);
+						
+						//show the toast
+						int duration = Toast.LENGTH_SHORT;  
+						Toast toast = Toast.makeText(getApplicationContext(), "Distance to Dest. (timer task): " + dist, duration);
+						toast.show();						
+						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
+
+					}
+				});
+			}
+		};
 	}
 
 	private void getFinalLocationClicked() {

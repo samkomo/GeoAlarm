@@ -31,10 +31,41 @@ public class AlarmListActivity extends ListActivity {
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
 		setContentView(R.layout.activity_alarm_list);
+		
+		//HELP here
+		showAboutDialog();
 
 		mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
 		
 		setListAdapter(mAdapter);
+	}
+
+	private void showAboutDialog() {
+		// TODO Auto-generated method stub
+//		final long alarmId = id;
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("About info hapa")
+		.setTitle("ABOUT ")
+		.setCancelable(true)
+		.setNegativeButton("OK", null)
+		.setPositiveButton("Help", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+//				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				showHelpDialog();
+			}
+		}).show();
+	}
+	
+	private void showHelpDialog() {
+		// TODO Auto-generated method stub
+//		final long alarmId = id;
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Help info hapa")
+		.setTitle("HELP ")
+		.setCancelable(true)
+		.setNegativeButton("OK", null)
+		.show();
 	}
 
 	@Override
@@ -105,4 +136,6 @@ public class AlarmListActivity extends ListActivity {
 			}
 		}).show();
 	}
+	
+	
 }

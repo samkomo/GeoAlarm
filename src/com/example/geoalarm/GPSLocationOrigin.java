@@ -100,13 +100,12 @@ public class GPSLocationOrigin extends Activity{
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						String dist = Double.toString(GPSTracker.theDistance);
+						String dist = Double.toString(GPSTracker.theDistanceFromOrigin);
 						
 						//show the toast
 						int duration = Toast.LENGTH_SHORT;  
-						Toast toast = Toast.makeText(getApplicationContext(), "Distance is (timer task): " + dist, duration);
-						toast.show();
-						
+						Toast toast = Toast.makeText(getApplicationContext(), "Distance from Origin (timer task): " + dist, duration);
+						toast.show();						
 						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
 
 					}
@@ -209,7 +208,7 @@ public class GPSLocationOrigin extends Activity{
     			
     		} catch (Exception e) {
     			// TODO: handle exception
-    			Log.e("log_tag", "Error kupitisha data when getting data for markers" + e.toString());
+    			Log.e("log_tag_origin", "Error kupitisha data when getting data for markers" + e.toString());
     		}
     		
     		
@@ -289,8 +288,6 @@ public class GPSLocationOrigin extends Activity{
 			//get the location of the marker clicked..
 			getFinalLocationClicked();
 			
-//			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
-
 //			gpsTracker.showSettingsAlertPassMessage("The distance is:: " + Float.toString(GPSTracker.results[0]));
 			
 			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
@@ -298,7 +295,7 @@ public class GPSLocationOrigin extends Activity{
 //			CalculatedDistanceAsyncTask distCalc = new CalculatedDistanceAsyncTask();
 //	    	distCalc.execute();
 			
-			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistance));
+			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromOrigin));
 	    	
 			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
 			//*** Start timerTask to calculcate distance

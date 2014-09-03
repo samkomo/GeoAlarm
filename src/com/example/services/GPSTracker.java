@@ -37,11 +37,13 @@ public class GPSTracker extends Service implements LocationListener {
 	public static float[] results = new float[5];
 	public static double mStartLat;
 	public static double mStartLon;
+	public static double mEndLat;
+	public static double mEndLon;
 	public static double myGPSLat;
 	public static double myGPSLon;
 	public static String distance_from_php = null;
 	
-	public static double theDistance;
+	public static double theDistanceFromOrigin, theDistanceFromDestination;
  
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -223,6 +225,8 @@ public class GPSTracker extends Service implements LocationListener {
 //    	get the new location, poll for the lat and longitude, get distance, calculate with
     	mStartLat = GlobalVars.lat_origin;
     	mStartLon = GlobalVars.lon_origin;
+    	mEndLat = GlobalVars.lat_destination;
+    	mEndLon = GlobalVars.lon_destination;
     	myGPSLat = getLocation().getLatitude();
     	myGPSLon = getLocation().getLongitude();
     	results = new float[5];
@@ -238,10 +242,11 @@ public class GPSTracker extends Service implements LocationListener {
     	Log.i("VALUES used:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
     	Log.i("VALUES used:ORIGIN: ", "lat: " + mStartLat + " lon: " + mStartLon);
     	    	    	
-    	theDistance = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
+    	theDistanceFromOrigin = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
 //    	theDistance = CalculationByDistance(-1.038147, 37.082634, -1.281269, 36.822214);
+    	theDistanceFromDestination = CalculationByDistance(mEndLat, mEndLon, myGPSLat, myGPSLon);
     	
-    	Log.i("VALUES; theDistance is: ", "distance = " + theDistance);
+    	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromOrigin);
     	
 
     }
