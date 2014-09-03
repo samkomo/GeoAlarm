@@ -299,9 +299,14 @@ public class GPSLocationDestination extends Activity{
 			double longitude_picked = (double) latlongfianl.longitude;
 			GlobalVars.lon_origin = longitude_picked;
 			
+//<<<<<<< HEAD
 			
 			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
 			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
+//=======
+			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
+			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lon_origin + " Lon is: " + GlobalVars.lon_origin);
+//>>>>>>> c2a187e6db182b841d38282e575d84ee84bb6d9e
 		} else {
 			LatLng latlongfianl = locator_new.getPosition();
 			double latitude_picked = (double) latlongfianl.latitude;
