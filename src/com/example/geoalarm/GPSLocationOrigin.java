@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.services.GPSTracker;
+import com.example.services.GPSQuery;
 import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
@@ -35,7 +35,7 @@ public class GPSLocationOrigin extends Activity{
 	
 	GoogleMap map;
 
-	GPSTracker gpsTracker, gpsTracker2;
+	GPSQuery gpsTracker, gpsTracker2;
 	MarkerOptions locator_new;
 	
 	boolean marker_added = false;
@@ -76,43 +76,43 @@ public class GPSLocationOrigin extends Activity{
 				
 	}
 
-	public void startTimer() {
-		// TODO Auto-generated method stub
-		timer = new Timer();
-		
-		//initialize the TimerTask's job
-		initializeTimerTask();
-		
-		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
-		timer.schedule(timerTask, 20000, 15000);
-	}
+//	public void startTimer() {
+//		// TODO Auto-generated method stub
+//		timer = new Timer();
+//		
+//		//initialize the TimerTask's job
+//		initializeTimerTask();
+//		
+//		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
+//		timer.schedule(timerTask, 20000, 15000);
+//	}
 
-	public void initializeTimerTask() {
-		// TODO Auto-generated method stub
-		timerTask = new TimerTask() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				
-				handler.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						String dist = Double.toString(GPSTracker.theDistanceFromOrigin);
-						
-						//show the toast
-						int duration = Toast.LENGTH_SHORT;  
-						Toast toast = Toast.makeText(getApplicationContext(), "Distance from Origin (timer task): " + dist, duration);
-						toast.show();						
-						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
-
-					}
-				});
-			}
-		};
-	}
+//	public void initializeTimerTask() {
+//		// TODO Auto-generated method stub
+//		timerTask = new TimerTask() {
+//			
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				
+//				handler.post(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						String dist = Double.toString(GPSTracker.theDistanceFromOrigin);
+//						
+//						//show the toast
+//						int duration = Toast.LENGTH_SHORT;  
+//						Toast toast = Toast.makeText(getApplicationContext(), "Distance from Origin (timer task): " + dist, duration);
+//						toast.show();						
+//						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
+//
+//					}
+//				});
+//			}
+//		};
+//	}
 
 	private void populateLatsAndLongs() {
 		// TODO Auto-generated method stub
@@ -245,7 +245,7 @@ public class GPSLocationOrigin extends Activity{
 
 	public void getGPSLocation() {
 		// TODO Auto-generated method stub
-		gpsTracker = new GPSTracker(GPSLocationOrigin.this);
+		gpsTracker = new GPSQuery(GPSLocationOrigin.this);
 		if (gpsTracker.canGetLocation()) { //gps enabled...
 			
 			latitude = gpsTracker.getLatitude();
@@ -290,23 +290,25 @@ public class GPSLocationOrigin extends Activity{
 			
 //			gpsTracker.showSettingsAlertPassMessage("The distance is:: " + Float.toString(GPSTracker.results[0]));
 			
-			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
+//			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
 			
 //			CalculatedDistanceAsyncTask distCalc = new CalculatedDistanceAsyncTask();
 //	    	distCalc.execute();
 			
-			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromOrigin));
+//			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromOrigin));
 	    	
 			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
 			//*** Start timerTask to calculcate distance
 			//SET TIMER
-			startTimer();
+//			startTimer();
 			
-			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
-			long id_global = AlarmDetailsActivity.id;
-			intent.putExtra("id", id_global);			
+			finish();
 			
-			startActivityForResult(intent, 0);
+//			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
+//			long id_global = AlarmDetailsActivity.id;
+//			intent.putExtra("id", id_global);			
+//			
+//			startActivityForResult(intent, 0);
 			
 			return true;
 		

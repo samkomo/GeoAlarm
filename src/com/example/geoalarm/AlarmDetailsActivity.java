@@ -1,16 +1,22 @@
 package com.example.geoalarm;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.example.controllers.AlarmManagerHelper;
 import com.example.controllers.CustomSwitch;
+import com.example.controllers.TimerHelper;
 import com.example.models.AlarmDBHelper;
 import com.example.models.AlarmModel;
 import com.example.models.GlobalVars;
+import com.example.services.GPSTracker;
 
 import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +52,8 @@ public class AlarmDetailsActivity extends Activity {
 	private Button btn_origin, btn_destination;
 	private SeekBar locRadiusSeakerBar = null;
 	private TextView radiusLabel;
+	
+
 	
 	public static long id;
 	public static int p=0;
@@ -233,8 +241,10 @@ public class AlarmDetailsActivity extends Activity {
 				break;
 			}
 			case R.id.action_save_alarm_details: {
-				updateModelFromLayout();
+
 				
+				updateModelFromLayout();//picks all input-ed values, and holds em in --> alarmDetails
+			
 				AlarmManagerHelper.cancelAlarms(this);
 				
 				if (alarmDetails.id < 0) {
@@ -242,6 +252,17 @@ public class AlarmDetailsActivity extends Activity {
 				} else {
 					dbHelper.updateAlarm(alarmDetails);
 				}
+				
+                /**run timer service, so that it starts after clicking save alarm && after
+                 * the alarm has been updated/created...
+                 * 
+                 * So, when timerTask goes to query for lat/lon to calculate the distance, then, 
+                 * we can comfortably get the values from SQLITE, not from GlobalVars....
+				**/
+//				startTimer();
+				
+				TimerHelper timer_help = new TimerHelper();
+				timer_help.startTimer(getApplicationContext());
 				
 				AlarmManagerHelper.setAlarms(this);
 				
@@ -259,6 +280,7 @@ public class AlarmDetailsActivity extends Activity {
 
 		return super.onOptionsItemSelected(item);
 	}
+	
 	
 	private void updateModelFromLayout() {		
 		alarmDetails.timeMinute = timePicker.getCurrentMinute().intValue();

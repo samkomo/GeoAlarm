@@ -16,9 +16,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
  
-public class GPSTracker extends Service implements LocationListener {
+public class GPSQuery extends Service implements LocationListener {
  
     private final Context mContext;
  
@@ -35,7 +34,7 @@ public class GPSTracker extends Service implements LocationListener {
     double latitude; // latitude
     double longitude; // longitude
     
-	GPSTracker gpsTracker;
+	GPSQuery gpsTracker;
 	double gpsLatitude, gpsLongitude;
 	public static float[] results = new float[5];
 	public static double mStartLat;
@@ -60,7 +59,7 @@ public class GPSTracker extends Service implements LocationListener {
     private AlarmModel alarmDetails;
     private AlarmDBHelper alarmDBHelper_oneAlarm;
  
-    public GPSTracker(Context context) {
+    public GPSQuery(Context context) {
         this.mContext = context;
         getLocation();
     }
@@ -131,7 +130,7 @@ public class GPSTracker extends Service implements LocationListener {
      * */
     public void stopUsingGPS(){
         if(locationManager != null){
-            locationManager.removeUpdates(GPSTracker.this);
+            locationManager.removeUpdates(GPSQuery.this);
         }       
     }
      
@@ -225,55 +224,7 @@ public class GPSTracker extends Service implements LocationListener {
  
     @Override
     public void onLocationChanged(Location location) {
-    	
-    	Toast.makeText(getApplicationContext(), "inside timer service", Toast.LENGTH_LONG).show();
-    	
-//    	gpsTracker = new GPSTracker(GPSTracker.this);
-//    	alarmDetails = new AlarmModel();
-//    	alarmDBHelper_oneAlarm = new AlarmDBHelper(this);
-//    	
-//    	alarmDetails = alarmDBHelper_oneAlarm.getAlarm(0);
-//    	
-//    	String [] originvals = GlobalVars.createArray(alarmDetails.loc_origin, "#");
-//    	String [] destvals = GlobalVars.createArray(alarmDetails.loc_destination, "#");
-//    	
-//    	Log.i("loc_origin_ARRAY: ", alarmDetails.loc_origin);
-//    	Log.i("loc_destination_ARRAY: ", alarmDetails.loc_destination);
-    	
-//    	get the new location, poll for the lat and longitude, get distance, calculate with
-    	/** shuld pick from sqlite, yees?? Cz  by the time Im querying for distance, 
-    	 * the details have already been saved...
-    	 * 
-    	 * Remember to split
-    	 * 
-    	 */
-    	mStartLat = GlobalVars.lat_origin;
-    	mStartLon = GlobalVars.lon_origin;
-    	mEndLat = GlobalVars.lat_destination;
-    	mEndLon = GlobalVars.lon_destination;
-    	
-//    	mStartLat = Double.valueOf(originvals[0]);
-//    	mStartLon = Double.valueOf(originvals[1]);
-//    	mEndLat = Double.valueOf(destvals[0]);
-//    	mEndLon = Double.valueOf(destvals[1]);
-    	
-    	myGPSLat = getLocation().getLatitude();
-    	myGPSLon = getLocation().getLongitude();
-    	results = new float[5];
-    	
-    	
-    	Log.i("ORIGIN Vals:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
-    	Log.i("ORIGIN Vals Origin: ", "lat: " + mStartLat + " lon: " + mStartLon);
-    	
-    	Log.i("DEST Vals:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
-    	Log.i("DEST Vals Origin: ", "lat: " + mEndLat + " lon: " + mEndLon);
-    	    	    	
-    	theDistanceFromOrigin = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
-    	theDistanceFromDestination = CalculationByDistance(mEndLat, mEndLon, myGPSLat, myGPSLon);
-    	
-    	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromOrigin);
-    	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromDestination);
-    	
+ 
 
     }
     

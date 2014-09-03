@@ -59,6 +59,8 @@
             android:enabled="true"/>
         <service android:name="com.example.services.GPSTracker" 
             android:enabled="true"/>
+        <service android:name="com.example.services.GPSQuery" 
+            android:enabled="true"/>
         
         <receiver android:name="com.example.controllers.AlarmManagerHelper" >
             <intent-filter>
