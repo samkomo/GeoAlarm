@@ -223,14 +223,12 @@ public class GPSTracker extends Service implements LocationListener {
 //    	get the new location, poll for the lat and longitude, get distance, calculate with
     	mStartLat = GlobalVars.lat_origin;
     	mStartLon = GlobalVars.lon_origin;
-//    	myGPSLat = location.getLatitude();
-//    	myGPSLon = location.getLongitude();
-    	myGPSLat = getLatitude();
-    	myGPSLon = getLongitude();
+    	myGPSLat = getLocation().getLatitude();
+    	myGPSLon = getLocation().getLongitude();
     	results = new float[5];
     	
     	
-    	Location.distanceBetween(myGPSLat, myGPSLon, mStartLat, mStartLon, results);
+    	Location.distanceBetween( mStartLat, mStartLon, myGPSLat, myGPSLon, results);
     	
     	
     	Location loc = new Location("LocationOrigin");
@@ -238,12 +236,12 @@ public class GPSTracker extends Service implements LocationListener {
     	loc.setLongitude(mStartLon);
     	
     	Log.i("VALUES used:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
-    	Log.i("VALUES used:current location: ", "lat: " + mStartLat + " lon: " + mStartLon);
-    	    	
-//    	theDistance = (location.distanceTo(loc))/1000;
-    	
+    	Log.i("VALUES used:ORIGIN: ", "lat: " + mStartLat + " lon: " + mStartLon);
+    	    	    	
     	theDistance = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
 //    	theDistance = CalculationByDistance(-1.038147, 37.082634, -1.281269, 36.822214);
+    	
+    	Log.i("VALUES; theDistance is: ", "distance = " + theDistance);
     	
 
     }
@@ -292,11 +290,13 @@ public class GPSTracker extends Service implements LocationListener {
     	**/
     	
     	double distance = (6371 * Math.acos
-    			( Math.cos( latitude1 ) * 
-    					Math.cos( latitude2 ) * 
-    					Math.cos( longitude1 - longitude2 ) + 
-    				Math.sin( latitude1 ) * Math.sin( latitude2 ) ) 
-    				) ;
+				    			( 
+			    					Math.cos( latitude1 ) * 
+			    					Math.cos( latitude2 ) * 
+			    					Math.cos( longitude1 - longitude2 ) + 
+				    				Math.sin( latitude1 ) * Math.sin( latitude2 ) 
+				    			) 
+    						) ;
 //        double distance = (6371 * Math.acos
 //        							( Math.cos( Math.toRadians(lat1) ) * 
 //			        					Math.cos( Math.toRadians(lat2) ) * 

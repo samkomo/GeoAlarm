@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 public class GPSLocationOrigin extends Activity{
@@ -57,7 +58,13 @@ public class GPSLocationOrigin extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		
 		setContentView(R.layout.maps_gps);
+		
+		getActionBar().setTitle("Pick point of origin");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialise();
 		
@@ -66,10 +73,7 @@ public class GPSLocationOrigin extends Activity{
 		populateLatsAndLongs();
 		
 		myMapListener();	
-		
-		//SET TIMER
-		startTimer();
-		
+				
 	}
 
 	public void startTimer() {
@@ -219,14 +223,7 @@ public class GPSLocationOrigin extends Activity{
             center_position = new LatLng(latitude, longitude);
 			
             map.setMyLocationEnabled(true);
-            
-			//add marker for your GS location
-//			map.addMarker(new MarkerOptions()
-//								.position(center_position)
-//								.title("ME")
-//								.snippet("I am here")
-//								.icon(icon_gps_current_location));	
-			
+            			
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 								.target(center_position) // Sets the center of the map to
 										// Mountain View
@@ -282,6 +279,11 @@ public class GPSLocationOrigin extends Activity{
 		int id = item.getItemId();
 		switch (id) {
 		
+		case android.R.id.home: 
+			finish();
+			return true;
+		
+		
 		case R.id.action_done:
 			
 			//get the location of the marker clicked..
@@ -299,12 +301,13 @@ public class GPSLocationOrigin extends Activity{
 			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistance));
 	    	
 			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
+			//*** Start timerTask to calculcate distance
+			//SET TIMER
+			startTimer();
 			
 			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
 			long id_global = AlarmDetailsActivity.id;
-			intent.putExtra("id", id_global);
-			
-			
+			intent.putExtra("id", id_global);			
 			
 			startActivityForResult(intent, 0);
 			

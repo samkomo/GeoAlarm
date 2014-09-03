@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 public class GPSLocationDestination extends Activity{
@@ -42,7 +43,13 @@ public class GPSLocationDestination extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		
 		setContentView(R.layout.maps_gps);
+		
+		getActionBar().setTitle("Pick point of destination");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialise();
 		
@@ -223,6 +230,10 @@ public class GPSLocationDestination extends Activity{
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
+		
+		case android.R.id.home: 
+			finish();
+			return true;
 		
 		case R.id.action_done:
 			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();

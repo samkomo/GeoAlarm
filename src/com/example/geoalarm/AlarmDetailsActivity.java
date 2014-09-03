@@ -201,6 +201,10 @@ public class AlarmDetailsActivity extends Activity {
 				
 				setResult(RESULT_OK);
 				finish();
+				
+				//Go back to List Activity i.e. home page
+				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
+				startActivity(intent);
 			}
 		}
 
