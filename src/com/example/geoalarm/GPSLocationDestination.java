@@ -298,8 +298,8 @@ public class GPSLocationDestination extends Activity{
 			double longitude_picked = (double) latlongfianl.longitude;
 			GlobalVars.lon_destination = longitude_picked;
 			
-			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination, Toast.LENGTH_LONG).show();
-			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination);
+			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
+			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lon_origin + " Lon is: " + GlobalVars.lon_origin);
 		} else {
 			LatLng latlongfianl = locator_new.getPosition();
 			double latitude_picked = (double) latlongfianl.latitude;
