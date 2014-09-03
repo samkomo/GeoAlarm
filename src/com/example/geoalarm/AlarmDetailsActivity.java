@@ -1,26 +1,16 @@
 package com.example.geoalarm;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.example.controllers.AlarmManagerHelper;
 import com.example.controllers.CustomSwitch;
-<<<<<<< HEAD
-import com.example.controllers.TimerHelper;
-=======
 import com.example.controllers.TimerDistanceHelper;
->>>>>>> 9274ba484d7b6a37082be4e56104d0299b1bb9bd
 import com.example.models.AlarmDBHelper;
 import com.example.models.AlarmModel;
 import com.example.models.GlobalVars;
-import com.example.services.GPSTracker;
 
-import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,8 +47,6 @@ public class AlarmDetailsActivity extends Activity {
 	private SeekBar locRadiusSeakerBar = null;
 	private TextView radiusLabel;
 	
-
-	
 	public static long id;
 	public static int p=0;
 	
@@ -73,11 +61,10 @@ public class AlarmDetailsActivity extends Activity {
 		getActionBar().setTitle("Create New Alarm");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-//<<<<<<< HEAD
 		initialize();
 		
 		onClickListenerForGPSButtons();
-//=======
+		
 		timePicker = (TimePicker) findViewById(R.id.alarm_details_time_picker);
 		edtName = (EditText) findViewById(R.id.alarm_details_name);
 		edtItems = (EditText) findViewById(R.id.alarm_details_items);
@@ -93,7 +80,6 @@ public class AlarmDetailsActivity extends Activity {
 		locRadiusSeakerBar = (SeekBar) findViewById(R.id.set_radius);
 		radiusLabel = (TextView) findViewById(R.id.radius_label);
 		
-//>>>>>>> 689f5457cd07876c0e6cf195629461c1a5181752
 		
 		id = getIntent().getExtras().getLong("id");
 		
@@ -111,7 +97,6 @@ public class AlarmDetailsActivity extends Activity {
 			GlobalVars.lat_destination =  Double.parseDouble(destination[0]);
 			GlobalVars.lon_destination = Double.parseDouble(destination[1]);
 			
-//			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lon_destination + " Log is: " + GlobalVars.lat_destination, Toast.LENGTH_LONG).show();
 			Toast.makeText(this, alarmDetails.loc_origin  + " +++++ " + alarmDetails.loc_destination, Toast.LENGTH_LONG).show();
 
 			timePicker.setCurrentMinute(alarmDetails.timeMinute);
@@ -245,10 +230,8 @@ public class AlarmDetailsActivity extends Activity {
 				break;
 			}
 			case R.id.action_save_alarm_details: {
-
+				updateModelFromLayout();
 				
-				updateModelFromLayout();//picks all input-ed values, and holds em in --> alarmDetails
-			
 				AlarmManagerHelper.cancelAlarms(this);
 				
 				if (alarmDetails.id < 0) {
@@ -257,20 +240,9 @@ public class AlarmDetailsActivity extends Activity {
 					dbHelper.updateAlarm(alarmDetails);
 				}
 				
-                /**run timer service, so that it starts after clicking save alarm && after
-                 * the alarm has been updated/created...
-                 * 
-                 * So, when timerTask goes to query for lat/lon to calculate the distance, then, 
-                 * we can comfortably get the values from SQLITE, not from GlobalVars....
-				**/
-//				startTimer();
-				
-				TimerHelper timer_help = new TimerHelper();
-				timer_help.startTimer(getApplicationContext());
-				
 				AlarmManagerHelper.setAlarms(this);
 				
-				//start timmer
+				//start timer
 				TimerDistanceHelper distanceTimer = new TimerDistanceHelper();
 				distanceTimer.startTimer(getApplicationContext());
 				
@@ -279,18 +251,12 @@ public class AlarmDetailsActivity extends Activity {
 				intent.putExtra("id", id);
 				startActivityForResult(intent, 0);
 				finish();
-				
-				
-				
-//				//Go back to List Activity i.e. home page
-//				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
-//				startActivity(intent);
+								
 			}
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
-	
 	
 	private void updateModelFromLayout() {		
 		alarmDetails.timeMinute = timePicker.getCurrentMinute().intValue();

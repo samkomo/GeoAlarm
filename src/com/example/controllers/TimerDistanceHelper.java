@@ -17,7 +17,6 @@ import com.example.models.AlarmModel;
 import com.example.models.GlobalVars;
 import com.example.services.AlarmService;
 import com.example.services.GPSTracker;
-import com.google.android.gms.internal.cn;
 
 public class TimerDistanceHelper {
 	

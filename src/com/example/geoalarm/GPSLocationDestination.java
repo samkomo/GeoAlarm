@@ -1,8 +1,5 @@
 package com.example.geoalarm;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -12,7 +9,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.services.GPSQuery;
+import com.example.services.GPSTracker;
 import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
@@ -21,7 +18,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +28,7 @@ public class GPSLocationDestination extends Activity{
 	
 	GoogleMap map;
 
-	GPSQuery gpsTracker;
+	GPSTracker gpsTracker;
 	MarkerOptions locator_new;
 	
 	boolean marker_added = false;
@@ -85,7 +81,6 @@ public class GPSLocationDestination extends Activity{
 					// TODO Auto-generated method stub
 					
 					BitmapDescriptor icon_drag_new_location = BitmapDescriptorFactory.fromResource(R.drawable.marker);
-					BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
 					
 					if (marker_added) { //if this is the 1st time to click on map i.e add marker location (origin or destination)...
 						
@@ -131,7 +126,6 @@ public class GPSLocationDestination extends Activity{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
             pDialog = new ProgressDialog(GPSLocationDestination.this);
             pDialog.setMessage("Loading map, please wait...");
             pDialog.setCancelable(false);
@@ -185,7 +179,7 @@ public class GPSLocationDestination extends Activity{
 
 	public void getGPSLocation() {
 		// TODO Auto-generated method stub
-		gpsTracker = new GPSQuery(GPSLocationDestination.this);
+		gpsTracker = new GPSTracker(GPSLocationDestination.this);
 		if (gpsTracker.canGetLocation()) { //gps enabled...
 			
 			latitude = gpsTracker.getLatitude();
@@ -223,23 +217,15 @@ public class GPSLocationDestination extends Activity{
 			return true;
 		
 		case R.id.action_done:
-//			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
 			
 			//get the location of the marker clicked..
 			getFinalLocationClicked();
+						
+			Intent intent = new Intent(GPSLocationDestination.this, AlarmDetailsActivity.class);
+			long id_global = AlarmDetailsActivity.id;
+			intent.putExtra("id", id_global);
 			
-//			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistanceFromDestination));
-			
-			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
-			//*** Start timerTask to calculcate distance
-			//SET TIMER
-//			startTimer();
-			
-//			Intent intent = new Intent(GPSLocationDestination.this, AlarmDetailsActivity.class);
-//			long id_global = AlarmDetailsActivity.id;
-//			intent.putExtra("id", id_global);
-//			
-//			startActivityForResult(intent, 0);
+			startActivityForResult(intent, 0);
 			finish();
 			return true;
 		
@@ -248,67 +234,25 @@ public class GPSLocationDestination extends Activity{
 		}
 	}
 
-<<<<<<< HEAD
-//	private void startTimer() {
-//		// TODO Auto-generated method stub
-//		timer = new Timer();
-//		
-//		//initialize the TimerTask's job
-//		initializeTimerTask();
-//		
-//		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
-//		timer.schedule(timerTask, 20000, 22000);
-//	}
-
-//	private void initializeTimerTask() {
-//		// TODO Auto-generated method stub
-//		timerTask = new TimerTask() {
-//			
-//			@Override
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				
-//				handler.post(new Runnable() {
-//					
-//					@Override
-//					public void run() {
-//						// TODO Auto-generated method stub
-//						String dist = Double.toString(GPSTracker.theDistanceFromDestination);
-//						
-//						//show the toast
-//						int duration = Toast.LENGTH_SHORT;  
-//						Toast toast = Toast.makeText(getApplicationContext(), "Distance to Dest. (timer task): " + dist, duration);
-//						toast.show();						
-//						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
-//
-//					}
-//				});
-//			}
-//		};
-//	}
-=======
 	
->>>>>>> 9274ba484d7b6a37082be4e56104d0299b1bb9bd
 
 	private void getFinalLocationClicked() {
 		// TODO Auto-generated method stub
-//		if (GlobalVars.isOrigin) {
-//			
-//			LatLng latlongfianl = locator_new.getPosition();
-//			double latitude_picked = (double) latlongfianl.latitude;
-//			GlobalVars.lat_origin = latitude_picked;
-//			double longitude_picked = (double) latlongfianl.longitude;
-//			GlobalVars.lon_origin = longitude_picked;
-//			
-////<<<<<<< HEAD
-//			
-//			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
-//			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
-////=======
-//			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
-//			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lon_origin + " Lon is: " + GlobalVars.lon_origin);
-////>>>>>>> c2a187e6db182b841d38282e575d84ee84bb6d9e
-//		} else {
+		if (GlobalVars.isOrigin) {
+			
+			LatLng latlongfianl = locator_new.getPosition();
+			double latitude_picked = (double) latlongfianl.latitude;
+			GlobalVars.lat_origin = latitude_picked;
+			double longitude_picked = (double) latlongfianl.longitude;
+			GlobalVars.lon_origin = longitude_picked;
+						
+			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
+			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
+
+			Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
+			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lon_origin + " Lon is: " + GlobalVars.lon_origin);
+
+		} else {
 			LatLng latlongfianl = locator_new.getPosition();
 			double latitude_picked = (double) latlongfianl.latitude;
 			GlobalVars.lat_destination = latitude_picked;
@@ -318,7 +262,7 @@ public class GPSLocationDestination extends Activity{
 			Toast.makeText(this, "DESTINATION:: Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination, Toast.LENGTH_LONG).show();
 			Log.i("DESTINATION: ", "Lat is: " + GlobalVars.lat_destination + " Lon is: " + GlobalVars.lon_destination);
 
-//		}
+		}
 		
 	}
 

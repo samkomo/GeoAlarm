@@ -42,7 +42,6 @@ public class AlarmListActivity extends ListActivity {
 
 	private void showAboutDialog() {
 		// TODO Auto-generated method stub
-//		final long alarmId = id;
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("About info hapa")
 		.setTitle("ABOUT ")
@@ -51,7 +50,6 @@ public class AlarmListActivity extends ListActivity {
 		.setPositiveButton("Help", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-//				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				showHelpDialog();
 			}
 		}).show();
@@ -59,7 +57,6 @@ public class AlarmListActivity extends ListActivity {
 	
 	private void showHelpDialog() {
 		// TODO Auto-generated method stub
-//		final long alarmId = id;
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Help info hapa")
 		.setTitle("HELP ")
