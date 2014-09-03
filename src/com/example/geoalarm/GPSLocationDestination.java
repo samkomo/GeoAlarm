@@ -43,10 +43,7 @@ public class GPSLocationDestination extends Activity{
 
 	public static double latitude, longitude;
 	
-	Timer timer;
-	TimerTask timerTask;
-    final Handler handler = new Handler();
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -251,6 +248,7 @@ public class GPSLocationDestination extends Activity{
 		}
 	}
 
+<<<<<<< HEAD
 //	private void startTimer() {
 //		// TODO Auto-generated method stub
 //		timer = new Timer();
@@ -288,6 +286,9 @@ public class GPSLocationDestination extends Activity{
 //			}
 //		};
 //	}
+=======
+	
+>>>>>>> 9274ba484d7b6a37082be4e56104d0299b1bb9bd
 
 	private void getFinalLocationClicked() {
 		// TODO Auto-generated method stub

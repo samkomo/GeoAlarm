@@ -5,7 +5,11 @@ import java.util.TimerTask;
 
 import com.example.controllers.AlarmManagerHelper;
 import com.example.controllers.CustomSwitch;
+<<<<<<< HEAD
 import com.example.controllers.TimerHelper;
+=======
+import com.example.controllers.TimerDistanceHelper;
+>>>>>>> 9274ba484d7b6a37082be4e56104d0299b1bb9bd
 import com.example.models.AlarmDBHelper;
 import com.example.models.AlarmModel;
 import com.example.models.GlobalVars;
@@ -168,7 +172,7 @@ public class AlarmDetailsActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationOrigin.class);
+				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationDestination.class);
 				
 				Toast.makeText(getApplicationContext(), "ORIGIN clicked..", Toast.LENGTH_LONG).show();
 				GlobalVars.isOrigin = true;
@@ -266,11 +270,17 @@ public class AlarmDetailsActivity extends Activity {
 				
 				AlarmManagerHelper.setAlarms(this);
 				
+				//start timmer
+				TimerDistanceHelper distanceTimer = new TimerDistanceHelper();
+				distanceTimer.startTimer(getApplicationContext());
+				
 				setResult(RESULT_OK);
 				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
 				intent.putExtra("id", id);
 				startActivityForResult(intent, 0);
 				finish();
+				
+				
 				
 //				//Go back to List Activity i.e. home page
 //				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);

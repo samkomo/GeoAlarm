@@ -1,7 +1,10 @@
 package com.example.services;
 
 import com.example.models.AlarmDBHelper;
+<<<<<<< HEAD
 import com.example.models.AlarmModel;
+=======
+>>>>>>> 9274ba484d7b6a37082be4e56104d0299b1bb9bd
 import com.example.models.GlobalVars;
 
 import android.app.AlertDialog;
@@ -35,18 +38,7 @@ public class GPSTracker extends Service implements LocationListener {
     double latitude; // latitude
     double longitude; // longitude
     
-	GPSTracker gpsTracker;
-	double gpsLatitude, gpsLongitude;
-	public static float[] results = new float[5];
-	public static double mStartLat;
-	public static double mStartLon;
-	public static double mEndLat;
-	public static double mEndLon;
-	public static double myGPSLat;
-	public static double myGPSLon;
-	public static String distance_from_php = null;
 	
-	public static double theDistanceFromOrigin, theDistanceFromDestination;
  
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -226,6 +218,7 @@ public class GPSTracker extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
     	
+<<<<<<< HEAD
     	Toast.makeText(getApplicationContext(), "inside timer service", Toast.LENGTH_LONG).show();
     	
 //    	gpsTracker = new GPSTracker(GPSTracker.this);
@@ -273,6 +266,9 @@ public class GPSTracker extends Service implements LocationListener {
     	
     	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromOrigin);
     	Log.i("VALUES; theDistance is: ", "distance = " + theDistanceFromDestination);
+=======
+    	
+>>>>>>> 9274ba484d7b6a37082be4e56104d0299b1bb9bd
     	
 
     }
