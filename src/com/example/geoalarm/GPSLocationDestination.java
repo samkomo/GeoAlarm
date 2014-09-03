@@ -1,5 +1,7 @@
 package com.example.geoalarm;
 
+import java.lang.reflect.Field;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -49,7 +52,14 @@ public class GPSLocationDestination extends Activity{
 		
 		setContentView(R.layout.maps_gps);
 		
-		getActionBar().setTitle("Pick point of destination");
+		actionBarCheck();
+		
+		if (GlobalVars.isOrigin) {
+			getActionBar().setTitle(GlobalVars.title_pick_origin);
+		} else if (!GlobalVars.isOrigin){
+			getActionBar().setTitle(GlobalVars.title_pick_dest);
+		}
+		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialise();
@@ -58,6 +68,23 @@ public class GPSLocationDestination extends Activity{
 		
 		myMapListener();	
 		
+	}
+	
+	private void actionBarCheck() {
+		// TODO Auto-generated method stub
+		// Force show overflow menu, if this is left as the default then
+	     //the overflow menu items will be attached to the hardware button for menu
+		try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            //field is of type java.lang.reflect.Field 
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if(menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ex) {
+            // y ou can choose to display the exception
+        }
 	}
 
 	private void populateLatsAndLongs() {
@@ -221,11 +248,6 @@ public class GPSLocationDestination extends Activity{
 			//get the location of the marker clicked..
 			getFinalLocationClicked();
 						
-			Intent intent = new Intent(GPSLocationDestination.this, AlarmDetailsActivity.class);
-			long id_global = AlarmDetailsActivity.id;
-			intent.putExtra("id", id_global);
-			
-			startActivityForResult(intent, 0);
 			finish();
 			return true;
 		

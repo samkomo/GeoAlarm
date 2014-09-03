@@ -39,6 +39,7 @@ public class AlarmScreen extends Activity {
 		int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
 		int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
 		String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+		final String idPassed = getIntent().getStringExtra(AlarmManagerHelper.ID);
 		
 		TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
 		tvName.setText(items);
@@ -55,6 +56,12 @@ public class AlarmScreen extends Activity {
 			@Override
 			public void onClick(View view) {
 				mPlayer.stop();
+				/**				stop the timer task too!
+				 * If id received == id passed in cancel then stop time syncer
+				 * **/
+//				TimerDistanceHelper.cancelTimerTask(Long.valueOf(idPassed));
+				//TimerDistanceHelper.cancelTimerTask();
+				TimerDistanceHelper.timer.cancel();
 				finish();
 			}
 		});

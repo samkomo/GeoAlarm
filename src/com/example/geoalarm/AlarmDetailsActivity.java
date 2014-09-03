@@ -159,7 +159,7 @@ public class AlarmDetailsActivity extends Activity {
 			public void onClick(View arg0) {
 				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationDestination.class);
 				
-				Toast.makeText(getApplicationContext(), "ORIGIN clicked..", Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), "ORIGIN clicked..", Toast.LENGTH_LONG).show();
 				GlobalVars.isOrigin = true;
 				startActivity(intent);
 			}
@@ -171,7 +171,7 @@ public class AlarmDetailsActivity extends Activity {
 			public void onClick(View v) {				
 				Intent intent = new Intent(AlarmDetailsActivity.this, GPSLocationDestination.class);
 				
-				Toast.makeText(getApplicationContext(), "DESTINATION", Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), "DESTINATION", Toast.LENGTH_LONG).show();
 				GlobalVars.isOrigin = false;
 				startActivity(intent);
 			}
@@ -247,9 +247,9 @@ public class AlarmDetailsActivity extends Activity {
 				distanceTimer.startTimer(getApplicationContext());
 				
 				setResult(RESULT_OK);
-				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
-				intent.putExtra("id", id);
-				startActivityForResult(intent, 0);
+//				Intent intent = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
+//				intent.putExtra("id", id);
+//				startActivityForResult(intent, 0);
 				finish();
 								
 			}

@@ -13,6 +13,8 @@ public class GlobalVars {
 	public static double lon_destination;
 	public static double lon_origin;
 	public static Boolean isOrigin;
+	public static String title_pick_dest = "Pick Destination";
+	public static String title_pick_origin = "Pick Origin";
 
 	public static String[] createArray(String original, String separator){
 

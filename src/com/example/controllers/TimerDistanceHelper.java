@@ -27,8 +27,8 @@ public class TimerDistanceHelper {
 	public static final String TIME_MINUTE = "timeMinute";
 	public static final String TONE = "alarmTone";
 
-	Timer timer;
-	TimerTask timerTask;
+	public static Timer timer;
+	static TimerTask timerTask;
     final Handler handler = new Handler();
     
     GPSTracker gpsTracker;
@@ -61,14 +61,11 @@ public class TimerDistanceHelper {
 	   	GPSTracker track = new GPSTracker(ctxt);
 	   	
 	   	AlarmDBHelper dbHelper = new AlarmDBHelper(ctxt);
-//	   	AlarmModel aModel = new AlarmModel();
-//	   	aModel = dbHelper.getAlarm(0);
-	   	
 
 	   	List<AlarmModel> alarms =  dbHelper.getAlarms();
 		
 		for (AlarmModel alarm : alarms) {
-			if (alarm.isEnabled && alarm.loc_radius > 10) {
+			if (alarm.isEnabled && alarm.loc_radius > 10) { //*** why > 10?? thought we pick all alarms??
 				Log.i("From Database", alarm.loc_origin);
 				
 //			   	get the new location, poll for the lat and longitude, get distance, calculate with
@@ -82,12 +79,7 @@ public class TimerDistanceHelper {
 			   	
 			   	
 			   	Location.distanceBetween( mStartLat, mStartLon, myGPSLat, myGPSLon, results);
-			   	
-			   	
-			   	Location loc = new Location("LocationOrigin");
-			   	loc.setLatitude(mStartLat);
-			   	loc.setLongitude(mStartLon);
-			   	
+			   				   	
 			   	Log.i("ORIGIN Vals:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
 			   	Log.i("ORIGIN Vals Origin: ", "lat: " + mStartLat + " lon: " + mStartLon);
 			   	
@@ -114,20 +106,30 @@ public class TimerDistanceHelper {
 					intent.putExtra(TIME_MINUTE, alarm.timeMinute);
 					intent.putExtra(TONE, alarm.alarmTone.toString());
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					
+//					cancelTimerTask(idOfAlarm);
+					
 					ctxt.startActivity(intent);
+					
 					
 					Log.i("Should show intent ", "distance = " + theDistanceFromDestination);
 				}
 			}
 		}
 	   	
-	   	
-
-		
-	   	
 	   	return theDistanceFromOrigin;
 		   
 	   }
+
+	public static void cancelTimerTask() {
+		// TODO Auto-generated method stub
+//		if(timer!=null){
+//		      Log.d("TIMER", "timer canceled");
+//		      timer.cancel();
+//		}
+		Log.d("TIMER", "timer canceled");
+		timer.cancel();
+	}
 
 	private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
 		Intent intent = new Intent(context, AlarmService.class);
@@ -157,12 +159,7 @@ public class TimerDistanceHelper {
 						// TODO Auto-generated method stub
 						Double dist = timerFunction(ctxt);
 						
-						//show the toast
-//						int duration = Toast.LENGTH_SHORT;  
-//						Toast toast = Toast.makeText(this, "Distance to Dest. (timer task): " + dist, duration);
-//						toast.show();	
 						Log.i("Orin distance", String.valueOf(dist));
-						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
 
 					}
 				});

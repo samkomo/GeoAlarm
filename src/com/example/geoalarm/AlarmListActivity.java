@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +44,11 @@ public class AlarmListActivity extends ListActivity {
 	private void showAboutDialog() {
 		// TODO Auto-generated method stub
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("About info hapa")
+		builder.setMessage("Geo Alarm is a geographical-aware alarm. \n" +
+				"You are given the choice to select a point of origin " +
+				"and destination from Google Maps and a radius outside which your alarm will " +
+				"be triggered to remind you of the items in your alarm.\n" +
+				"This happens on top of the usual alarm setup.")
 		.setTitle("ABOUT ")
 		.setCancelable(true)
 		.setNegativeButton("OK", null)
@@ -55,10 +60,22 @@ public class AlarmListActivity extends ListActivity {
 		}).show();
 	}
 	
+	
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+	}
+
 	private void showHelpDialog() {
 		// TODO Auto-generated method stub
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Help info hapa")
+		builder.setMessage("1. To set a new alarm, click on the plus (+) icon at the homepage menu bar.\n" +
+				"2. To edit an existing alarm, click on the alarm from the list and edit its items as you desire.\n" +
+				"3. To add a location (origin/destination), tap on the desired location on the map. Click 'Done' once done.\n" +
+				"4. To add a location by dragging themarker, long click on the marker for 2secs then start dragging.\n" +
+				"5. To delete an alarm, long click on the alarm then select 'OK' on the dialogue box that appears.\n")
 		.setTitle("HELP ")
 		.setCancelable(true)
 		.setNegativeButton("OK", null)
