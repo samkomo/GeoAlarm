@@ -35,13 +35,29 @@
         <activity
             android:name="com.example.geoalarm.AlarmDetailsActivity"
             android:label="@string/title_activity_alarm_details" >
+            
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.geoalarm.AlarmListActivity" />
         </activity>
         
         <activity android:name="com.example.controllers.AlarmScreen" />
-        <activity android:name="com.example.geoalarm.GPSLocationOrigin" />
-        <activity android:name="com.example.geoalarm.GPSLocationDestination" />
+        <activity android:name="com.example.geoalarm.GPSLocationOrigin" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.geoalarm.AlarmDetailsActivity" />
+            
+        </activity>
+        <activity android:name="com.example.geoalarm.GPSLocationDestination" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.geoalarm.AlarmDetailsActivity" />
+            
+        </activity>
         
         <service android:name="com.example.services.AlarmService" 
+            android:enabled="true"/>
+        <service android:name="com.example.services.GPSTracker" 
             android:enabled="true"/>
         
         <receiver android:name="com.example.controllers.AlarmManagerHelper" >

@@ -1,33 +1,41 @@
 package com.example.geoalarm;
 
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.controllers.GPSTracker;
+import com.example.services.GPSTracker;
 import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 public class GPSLocationOrigin extends Activity{
 	
 	GoogleMap map;
 
-	GPSTracker gpsTracker;
+	GPSTracker gpsTracker, gpsTracker2;
 	MarkerOptions locator_new;
 	
 	boolean marker_added = false;
@@ -36,13 +44,27 @@ public class GPSLocationOrigin extends Activity{
 	
 	private ProgressDialog pDialog;
 
-	public static double latitude, longitude;
+	public static double latitude, longitude;	
+	
+	public static String distance_from_php = null;
+	
+	Timer timer;
+	TimerTask timerTask;
+    final Handler handler = new Handler();
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		
 		setContentView(R.layout.maps_gps);
+		
+		getActionBar().setTitle("Pick point of origin");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialise();
 		
@@ -51,7 +73,46 @@ public class GPSLocationOrigin extends Activity{
 		populateLatsAndLongs();
 		
 		myMapListener();	
+				
+	}
+
+	public void startTimer() {
+		// TODO Auto-generated method stub
+		timer = new Timer();
 		
+		//initialize the TimerTask's job
+		initializeTimerTask();
+		
+		//schedule the timer, after the first 30000ms the TimerTask will run every 10000ms
+		timer.schedule(timerTask, 20000, 15000);
+	}
+
+	public void initializeTimerTask() {
+		// TODO Auto-generated method stub
+		timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				handler.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						String dist = Double.toString(GPSTracker.theDistance);
+						
+						//show the toast
+						int duration = Toast.LENGTH_SHORT;  
+						Toast toast = Toast.makeText(getApplicationContext(), "Distance is (timer task): " + dist, duration);
+						toast.show();
+						
+						//gpsTracker2.showSettingsAlertPassMessage("Distance is (timer task): " + dist);
+
+					}
+				});
+			}
+		};
 	}
 
 	private void populateLatsAndLongs() {
@@ -75,7 +136,7 @@ public class GPSLocationOrigin extends Activity{
 					// TODO Auto-generated method stub
 					
 					BitmapDescriptor icon_drag_new_location = BitmapDescriptorFactory.fromResource(R.drawable.marker);
-					BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
+					
 					
 					if (marker_added) { //if this is the 1st time to click on map i.e add marker location (origin or destination)...
 						
@@ -100,17 +161,20 @@ public class GPSLocationOrigin extends Activity{
 												.snippet("Drag me 1")
 												.icon(icon_drag_new_location);
 						
-						//add marker for your GS location
-						map.addMarker(new MarkerOptions()
-											.position(center_position)
-											.title("ME")
-											.snippet("I am here")
-											.icon(icon_gps_current_location));
 						
 						map.addMarker(locator_new).setDraggable(true);
 					}					
 				}	
-			});		
+			});		// END of onMapClickListener
+			
+			map.setOnMyLocationChangeListener(new OnMyLocationChangeListener() {
+				
+				@Override
+				public void onMyLocationChange(Location arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 	}
 
 	private void initialise() {
@@ -155,20 +219,11 @@ public class GPSLocationOrigin extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-           
-            BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
-            
+                                   
             center_position = new LatLng(latitude, longitude);
 			
             map.setMyLocationEnabled(true);
-            
-			//add marker for your GS location
-//			map.addMarker(new MarkerOptions()
-//								.position(center_position)
-//								.title("ME")
-//								.snippet("I am here")
-//								.icon(icon_gps_current_location));	
-			
+            			
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 								.target(center_position) // Sets the center of the map to
 										// Mountain View
@@ -224,15 +279,35 @@ public class GPSLocationOrigin extends Activity{
 		int id = item.getItemId();
 		switch (id) {
 		
+		case android.R.id.home: 
+			finish();
+			return true;
+		
+		
 		case R.id.action_done:
-			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
-			
-			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
-			long id_global = AlarmDetailsActivity.id;
-			intent.putExtra("id", id_global);
 			
 			//get the location of the marker clicked..
 			getFinalLocationClicked();
+			
+//			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
+
+//			gpsTracker.showSettingsAlertPassMessage("The distance is:: " + Float.toString(GPSTracker.results[0]));
+			
+			Log.i("Distance is:: (distanceBETWEEN) ", Float.toString(GPSTracker.results[0]));
+			
+//			CalculatedDistanceAsyncTask distCalc = new CalculatedDistanceAsyncTask();
+//	    	distCalc.execute();
+			
+			Log.i("Distance is:: (newphpphp) (distanceTO) ", Double.toString(GPSTracker.theDistance));
+	    	
+			//*** store Double.toString(GPSTracker.theDistance) in SQLITE
+			//*** Start timerTask to calculcate distance
+			//SET TIMER
+			startTimer();
+			
+			Intent intent = new Intent(GPSLocationOrigin.this, AlarmDetailsActivity.class);
+			long id_global = AlarmDetailsActivity.id;
+			intent.putExtra("id", id_global);			
 			
 			startActivityForResult(intent, 0);
 			
@@ -252,11 +327,13 @@ public class GPSLocationOrigin extends Activity{
 		GlobalVars.lon_origin = longitude_picked;
 		
 		Toast.makeText(this, "ORIGIN:: Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin, Toast.LENGTH_LONG).show();
-		Log.i("ORIGIN: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
+//		Log.i("ORIGIN: ", "Lat is: " + GlobalVars.lat_origin + " Lon is: " + GlobalVars.lon_origin);
 	}
 
 	//menu items 
 	//END
 	
+	
+
 
 }

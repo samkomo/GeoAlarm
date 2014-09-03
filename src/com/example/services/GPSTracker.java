@@ -1,4 +1,6 @@
-package com.example.controllers;
+package com.example.services;
+
+import com.example.models.GlobalVars;
 
 import android.app.AlertDialog;
 import android.app.Service;
@@ -29,6 +31,17 @@ public class GPSTracker extends Service implements LocationListener {
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
+    
+	GPSTracker gpsTracker;
+	double gpsLatitude, gpsLongitude;
+	public static float[] results = new float[5];
+	public static double mStartLat;
+	public static double mStartLon;
+	public static double myGPSLat;
+	public static double myGPSLon;
+	public static String distance_from_php = null;
+	
+	public static double theDistance;
  
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
@@ -177,12 +190,130 @@ public class GPSTracker extends Service implements LocationListener {
         // Showing Alert Message
         alertDialog.show();
     }
+    
+    /**
+     * Function to show alert dialog with passed message
+     * On pressing Settings button will lauch Settings Options
+     * */
+    public void showSettingsAlertPassMessage(String message){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+      
+        // Setting Dialog Title
+        alertDialog.setTitle("Alert:Distance changed");
+  
+        // Setting Dialog Message
+        alertDialog.setMessage(message);
+      
+        // on pressing cancel button
+        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+            }
+        });
+  
+        // Showing Alert Message
+        alertDialog.show();
+    }
  
     @Override
     public void onLocationChanged(Location location) {
     	
-//    	
+    	gpsTracker = new GPSTracker(GPSTracker.this);
+    	
+//    	get the new location, poll for the lat and longitude, get distance, calculate with
+    	mStartLat = GlobalVars.lat_origin;
+    	mStartLon = GlobalVars.lon_origin;
+    	myGPSLat = getLocation().getLatitude();
+    	myGPSLon = getLocation().getLongitude();
+    	results = new float[5];
+    	
+    	
+    	Location.distanceBetween( mStartLat, mStartLon, myGPSLat, myGPSLon, results);
+    	
+    	
+    	Location loc = new Location("LocationOrigin");
+    	loc.setLatitude(mStartLat);
+    	loc.setLongitude(mStartLon);
+    	
+    	Log.i("VALUES used:GPS: ", "lat: " + myGPSLat + " lon: " + myGPSLon);
+    	Log.i("VALUES used:ORIGIN: ", "lat: " + mStartLat + " lon: " + mStartLon);
+    	    	    	
+    	theDistance = CalculationByDistance(mStartLat, mStartLon, myGPSLat, myGPSLon);
+//    	theDistance = CalculationByDistance(-1.038147, 37.082634, -1.281269, 36.822214);
+    	
+    	Log.i("VALUES; theDistance is: ", "distance = " + theDistance);
+    	
+
     }
+    
+    public double CalculationByDistance(double initialLat, double initialLong, double finalLat, double finalLong){
+        /*PRE: All the input values are in radians!*/
+
+        double earthRadius = 6371; //In Km if you want the distance in km
+        
+        double lat1 = initialLat;
+        	if(lat1 < 0){ //ie negative
+        		lat1 = (-1*lat1);
+        	}
+        double lon1 = initialLong;
+        double lat2 = finalLat;
+	        if(lat2 < 0){ //ie negative
+	        	lat2 = (-1*lat2);
+	    	}
+        double lon2 = finalLong;
+        double lat1Rad = Math.toRadians(lat1);
+        double lat2Rad = Math.toRadians(lat2);
+
+        double deltaLonRad = Math.toRadians(lon2 - lon1);
+        
+        double latitude1 = Math.toRadians(Double.valueOf(Location.convert(lat1, Location.FORMAT_DEGREES)) );
+    	double longitude1 = Math.toRadians(Double.valueOf(Location.convert(lon1, Location.FORMAT_DEGREES)) );
+    	double latitude2 = Math.toRadians(Double.valueOf(Location.convert(lat2, Location.FORMAT_DEGREES)) );
+    	double longitude2 = Math.toRadians(Double.valueOf(Location.convert(lon2, Location.FORMAT_DEGREES)) );
+    	
+//	   double distance = (6371 * Math.acos
+//				( Math.cos( latitude1 ) * 
+//				Math.cos( latitude2 ) * 
+//				Math.cos( longitude1 - longitude2 ) + 
+//				Math.sin( latitude1 * Math.sin( latitude2 ) )
+//				)
+//		);
+    	
+    	/**
+    	double distance = Math.acos(Math.sin(latitude1) * Math.sin(latitude2) + Math.cos(latitude1) * Math.cos(latitude2) * Math.cos(longitude1 - longitude2));
+    	if(distance < 0) {
+    		distance = distance + Math.PI;
+        }
+    	
+    	Math.round(distance * 6371);
+    	
+    	**/
+    	
+    	double distance = (6371 * Math.acos
+				    			( 
+			    					Math.cos( latitude1 ) * 
+			    					Math.cos( latitude2 ) * 
+			    					Math.cos( longitude1 - longitude2 ) + 
+				    				Math.sin( latitude1 ) * Math.sin( latitude2 ) 
+				    			) 
+    						) ;
+//        double distance = (6371 * Math.acos
+//        							( Math.cos( Math.toRadians(lat1) ) * 
+//			        					Math.cos( Math.toRadians(lat2) ) * 
+//			        					Math.cos( Math.toRadians(lon1) - Math.toRadians(lon2) ) + 
+//			        					Math.sin( Math.toRadians(lat1) * Math.sin( Math.toRadians(lat2) ) )
+//        							)
+//        					);
+    	
+//    	double latitude1 = Double.valueOf(Location.convert(loc1.getLatitude(), Location.FORMAT_DEGREES)) ;
+    	
+    	
+    	
+        
+//        double distance = Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(deltaLonRad)) * earthRadius;
+        return distance; //distance in meters
+
+    }    
  
     @Override
     public void onProviderDisabled(String provider) {
@@ -200,5 +331,7 @@ public class GPSTracker extends Service implements LocationListener {
     public IBinder onBind(Intent arg0) {
         return null;
     }
+    
+   
  
 }

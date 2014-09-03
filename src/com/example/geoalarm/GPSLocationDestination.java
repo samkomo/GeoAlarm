@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.controllers.GPSTracker;
+import com.example.services.GPSTracker;
 import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 public class GPSLocationDestination extends Activity{
@@ -42,7 +43,13 @@ public class GPSLocationDestination extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		
 		setContentView(R.layout.maps_gps);
+		
+		getActionBar().setTitle("Pick point of destination");
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialise();
 		
@@ -100,12 +107,12 @@ public class GPSLocationDestination extends Activity{
 												.snippet("Drag me 1")
 												.icon(icon_drag_new_location);
 						
-						//add marker for your GS location
-						map.addMarker(new MarkerOptions()
-											.position(center_position)
-											.title("ME")
-											.snippet("I am here")
-											.icon(icon_gps_current_location));
+//						//add marker for your GS location
+//						map.addMarker(new MarkerOptions()
+//											.position(center_position)
+//											.title("ME")
+//											.snippet("I am here")
+//											.icon(icon_gps_current_location));
 						
 						map.addMarker(locator_new).setDraggable(true);
 					}					
@@ -159,13 +166,15 @@ public class GPSLocationDestination extends Activity{
             BitmapDescriptor icon_gps_current_location = BitmapDescriptorFactory.fromResource(R.drawable.marker_gps);
             
             center_position = new LatLng(latitude, longitude);
+            
+            map.setMyLocationEnabled(true);
 			
-			//add marker for your GS location
-			map.addMarker(new MarkerOptions()
-								.position(center_position)
-								.title("ME")
-								.snippet("I am here")
-								.icon(icon_gps_current_location));	
+//			//add marker for your GS location
+//			map.addMarker(new MarkerOptions()
+//								.position(center_position)
+//								.title("ME")
+//								.snippet("I am here")
+//								.icon(icon_gps_current_location));	
 			
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 								.target(center_position) // Sets the center of the map to
@@ -221,6 +230,10 @@ public class GPSLocationDestination extends Activity{
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
+		
+		case android.R.id.home: 
+			finish();
+			return true;
 		
 		case R.id.action_done:
 			Toast.makeText(this, "Take location of new marker dragged and use in service", Toast.LENGTH_LONG).show();
