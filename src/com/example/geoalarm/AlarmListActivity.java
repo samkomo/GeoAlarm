@@ -33,6 +33,8 @@ public class AlarmListActivity extends ListActivity {
 		
 		setContentView(R.layout.activity_alarm_list);
 		
+		GPSLocationDestination.actionBarCheck(getApplicationContext());
+		
 		//HELP here
 		showAboutDialog();
 
@@ -62,11 +64,7 @@ public class AlarmListActivity extends ListActivity {
 	
 	
 	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		// TODO Auto-generated method stub
-		super.onConfigurationChanged(newConfig);
-	}
+
 
 	private void showHelpDialog() {
 		// TODO Auto-generated method stub
@@ -81,6 +79,12 @@ public class AlarmListActivity extends ListActivity {
 		.setNegativeButton("OK", null)
 		.show();
 	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,6 +98,14 @@ public class AlarmListActivity extends ListActivity {
 		switch (item.getItemId()) {
 			case R.id.action_add_new_alarm: {
 				startAlarmDetailsActivity(-1);
+				break;
+			}
+			case R.id.action_about: {
+				showAboutDialog();
+				break;
+			}
+			case R.id.action_help: {
+				showHelpDialog();
 				break;
 			}
 		}

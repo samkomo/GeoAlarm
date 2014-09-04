@@ -8,5 +8,19 @@
         android:icon="@drawable/ic_action_add_alarm"
         android:showAsAction="always"
         android:title="@string/action_settings"/>
+    
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_about"
+        android:showAsAction="ifRoom"
+        android:title="About"/>
+    
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_help"
+        android:showAsAction="ifRoom"
+        android:title="Help"/>
 
 </menu>

@@ -8,6 +8,8 @@ import com.example.models.AlarmModel;
 import com.example.models.GlobalVars;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Bundle;
@@ -57,6 +59,8 @@ public class AlarmDetailsActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
 		setContentView(R.layout.activity_alarm_details);
+		
+		GPSLocationDestination.actionBarCheck(getApplicationContext());
 
 		getActionBar().setTitle("Create New Alarm");
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -223,10 +227,18 @@ public class AlarmDetailsActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		
 		switch (item.getItemId()) {
 			case android.R.id.home: {
 				finish();
+				break;
+			}
+			case R.id.action_about: {
+				showAboutDialog();
+				break;
+			}
+			case R.id.action_help: {
+				showHelpDialog();
 				break;
 			}
 			case R.id.action_save_alarm_details: {
@@ -256,6 +268,38 @@ public class AlarmDetailsActivity extends Activity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void showAboutDialog() {
+		// TODO Auto-generated method stub
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Geo Alarm is a geographical-aware alarm. \n" +
+				"You are given the choice to select a point of origin " +
+				"and destination from Google Maps and a radius outside which your alarm will " +
+				"be triggered to remind you of the items in your alarm.\n" +
+				"This happens on top of the usual alarm setup.")
+		.setTitle("ABOUT ")
+		.setCancelable(true)
+		.setNegativeButton("OK", null)
+		.show();
+	}
+	
+	
+	
+
+
+	private void showHelpDialog() {
+		// TODO Auto-generated method stub
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("1. To set a new alarm, click on the plus (+) icon at the homepage menu bar.\n" +
+				"2. To edit an existing alarm, click on the alarm from the list and edit its items as you desire.\n" +
+				"3. To add a location (origin/destination), tap on the desired location on the map. Click 'Done' once done.\n" +
+				"4. To add a location by dragging themarker, long click on the marker for 2secs then start dragging.\n" +
+				"5. To delete an alarm, long click on the alarm then select 'OK' on the dialogue box that appears.\n")
+		.setTitle("HELP ")
+		.setCancelable(true)
+		.setNegativeButton("OK", null)
+		.show();
 	}
 	
 	private void updateModelFromLayout() {		

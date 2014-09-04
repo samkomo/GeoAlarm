@@ -7,5 +7,19 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/save_alarm_details"/>
+    
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_about"
+        android:showAsAction="never"
+        android:title="About"/>
+    
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_help"
+        android:showAsAction="never"
+        android:title="Help"/>
 
 </menu>

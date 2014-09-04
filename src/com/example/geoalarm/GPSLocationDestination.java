@@ -16,8 +16,12 @@ import com.example.geoalarm.R;
 import com.example.models.GlobalVars;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +56,7 @@ public class GPSLocationDestination extends Activity{
 		
 		setContentView(R.layout.maps_gps);
 		
-		actionBarCheck();
+		actionBarCheck(getApplicationContext());
 		
 		if (GlobalVars.isOrigin) {
 			getActionBar().setTitle(GlobalVars.title_pick_origin);
@@ -70,12 +74,12 @@ public class GPSLocationDestination extends Activity{
 		
 	}
 	
-	private void actionBarCheck() {
+	public static void actionBarCheck(Context ctxt) {
 		// TODO Auto-generated method stub
 		// Force show overflow menu, if this is left as the default then
 	     //the overflow menu items will be attached to the hardware button for menu
 		try {
-            ViewConfiguration config = ViewConfiguration.get(this);
+            ViewConfiguration config = ViewConfiguration.get(ctxt);
             //field is of type java.lang.reflect.Field 
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if(menuKeyField != null) {
@@ -233,6 +237,7 @@ public class GPSLocationDestination extends Activity{
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
@@ -241,6 +246,10 @@ public class GPSLocationDestination extends Activity{
 		
 		case android.R.id.home: 
 			finish();
+			return true;
+			
+		case R.id.action_help:
+			showHelpDialog();
 			return true;
 		
 		case R.id.action_done:
@@ -254,6 +263,43 @@ public class GPSLocationDestination extends Activity{
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	private void showAboutDialog() {
+		// TODO Auto-generated method stub
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Geo Alarm is a geographical-aware alarm. \n" +
+				"You are given the choice to select a point of origin " +
+				"and destination from Google Maps and a radius outside which your alarm will " +
+				"be triggered to remind you of the items in your alarm.\n" +
+				"This happens on top of the usual alarm setup.")
+		.setTitle("ABOUT ")
+		.setCancelable(true)
+		.setNegativeButton("OK", null)
+		.setPositiveButton("Help", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				showHelpDialog();
+			}
+		}).show();
+	}
+	
+	
+	
+
+
+	private void showHelpDialog() {
+		// TODO Auto-generated method stub
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("1. To set a new alarm, click on the plus (+) icon at the homepage menu bar.\n" +
+				"2. To edit an existing alarm, click on the alarm from the list and edit its items as you desire.\n" +
+				"3. To add a location (origin/destination), tap on the desired location on the map. Click 'Done' once done.\n" +
+				"4. To add a location by dragging themarker, long click on the marker for 2secs then start dragging.\n" +
+				"5. To delete an alarm, long click on the alarm then select 'OK' on the dialogue box that appears.\n")
+		.setTitle("HELP ")
+		.setCancelable(true)
+		.setNegativeButton("OK", null)
+		.show();
 	}
 
 	
