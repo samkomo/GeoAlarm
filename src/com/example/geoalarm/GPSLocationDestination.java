@@ -13,6 +13,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.services.GPSTracker;
 import com.example.geoalarm.R;
+import com.example.models.AlarmDBHelper;
+import com.example.models.AlarmModel;
 import com.example.models.GlobalVars;
 
 import android.app.Activity;
@@ -36,7 +38,7 @@ public class GPSLocationDestination extends Activity{
 	GoogleMap map;
 
 	GPSTracker gpsTracker;
-	MarkerOptions locator_new;
+	MarkerOptions locator_new, location_existing_origin, location_existing_dest;
 	
 	boolean marker_added = false;
 	LatLng newLatLng = null;
@@ -46,6 +48,11 @@ public class GPSLocationDestination extends Activity{
 
 	public static double latitude, longitude;
 	
+	private AlarmModel alarmDetails;
+	
+	boolean alarm_exists;
+	
+	private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +113,8 @@ public class GPSLocationDestination extends Activity{
 		newLatLng = null;
 		marker_added = true;
 		
+		ifNewAlarmOrNot();
+		
 			map.setOnMapClickListener(new OnMapClickListener() {				
 				@Override
 				public void onMapClick(LatLng arg0) {
@@ -115,13 +124,31 @@ public class GPSLocationDestination extends Activity{
 					
 					if (marker_added) { //if this is the 1st time to click on map i.e add marker location (origin or destination)...
 						
-						locator_new = new MarkerOptions()
+	
+						
+					 if (!alarm_exists) { //alarm is new, so you are starting, so location NOT exists
+							Log.i("newnewnewn", "taken as new");
+							locator_new = new MarkerOptions()
 												.position(arg0)
 												.title("DRAG origin")
 												.snippet("Drag me 1")
 												.icon(icon_drag_new_location);
 						
-						map.addMarker(locator_new).setDraggable(true);		
+							map.addMarker(locator_new).setDraggable(true);	
+						}
+					 else if (alarm_exists) { //alarm not new, so clear map first
+						 	map.clear();
+							
+							locator_new = new MarkerOptions()
+													.position(arg0)
+													.title("DRAG origin")
+													.snippet("Drag me 1")
+													.icon(icon_drag_new_location);
+													
+							map.addMarker(locator_new).setDraggable(true);
+					}
+						
+						
 						
 						marker_added = false;
 						
@@ -140,6 +167,62 @@ public class GPSLocationDestination extends Activity{
 					}					
 				}	
 			});		
+	}
+
+	private boolean ifNewAlarmOrNot() {
+		// TODO Auto-generated method stub
+		/**if id != -1 i.e not new, then take the previous location and 
+		 * create a amarker for it
+		 * 
+		 * Also check if its origin or destination clicked
+		 * 
+		 * **/
+		
+		alarm_exists = false;
+		BitmapDescriptor icon_drag_new_location = BitmapDescriptorFactory.fromResource(R.drawable.marker);
+		
+		if (AlarmDetailsActivity.id != -1) { //alarm exists, so you are editing, so location exists
+			alarm_exists = true;
+			alarmDetails = dbHelper.getAlarm(AlarmDetailsActivity.id);
+			
+			if (GlobalVars.isOrigin) { //origin clicked, pick origin location & create marker
+												
+				String [] origin = GlobalVars.createArray(alarmDetails.loc_origin, "#");
+				
+				Log.i("existingORIGIN", Double.parseDouble(origin[0]) + "and " + Double.parseDouble(origin[1]));
+				
+				//create a latlong value
+				LatLng exist_origin = new LatLng(Double.parseDouble(origin[0]), Double.parseDouble(origin[1]));
+				
+				//create a marker
+				location_existing_origin = new MarkerOptions()
+												.position(exist_origin)
+												.title("Origin")
+												.snippet("Drag me origin")
+												.icon(icon_drag_new_location);
+						
+				map.addMarker(location_existing_origin).setDraggable(true);								
+				
+				
+			} else { //destination clicked
+				
+				String [] destination = GlobalVars.createArray(alarmDetails.loc_destination, "#");
+				Log.i("existingDESTINATION", Double.parseDouble(destination[0]) + "and " + Double.parseDouble(destination[1]));
+				//create a latlong value
+				LatLng exist_origin = new LatLng(Double.parseDouble(destination[0]), Double.parseDouble(destination[1]));
+				
+				//create a marker
+				location_existing_dest = new MarkerOptions()
+												.position(exist_origin)
+												.title("Destination")
+												.snippet("Drag to destination")
+												.icon(icon_drag_new_location);
+						
+				map.addMarker(location_existing_dest).setDraggable(true);									
+				
+			}
+		}
+		return alarm_exists;
 	}
 
 	private void initialise() {

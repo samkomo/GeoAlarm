@@ -61,8 +61,16 @@ public class AlarmDetailsActivity extends Activity {
 		setContentView(R.layout.activity_alarm_details);
 		
 		GPSLocationDestination.actionBarCheck(getApplicationContext());
+		
+		id = getIntent().getExtras().getLong("id");
+		
+		if (id != -1) { //alarm exists, so you are editing
+			getActionBar().setTitle("Edit Alarm");
+		} else {
+			getActionBar().setTitle("Create New Alarm");
+		}
 
-		getActionBar().setTitle("Create New Alarm");
+		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initialize();
@@ -85,7 +93,7 @@ public class AlarmDetailsActivity extends Activity {
 		radiusLabel = (TextView) findViewById(R.id.radius_label);
 		
 		
-		id = getIntent().getExtras().getLong("id");
+		
 		
 		if (id == -1) {
 			alarmDetails = new AlarmModel();
