@@ -359,6 +359,7 @@ public class GPSLocationDestination extends Activity{
 		.setTitle("ABOUT ")
 		.setCancelable(true)
 		.setNegativeButton("OK", null)
+		.setIcon(R.drawable.ic_launcher)
 		.setPositiveButton("Help", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -380,6 +381,7 @@ public class GPSLocationDestination extends Activity{
 				"4. To add a location by dragging themarker, long click on the marker for 2secs then start dragging.\n" +
 				"5. To delete an alarm, long click on the alarm then select 'OK' on the dialogue box that appears.\n")
 		.setTitle("HELP ")
+		.setIcon(R.drawable.ic_launcher)
 		.setCancelable(true)
 		.setNegativeButton("OK", null)
 		.show();

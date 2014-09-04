@@ -39,14 +39,25 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/pick_origin_point"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="10dp"
             android:ems="15"
             android:text="@string/details_destination_point" />
+        
+         <View
+            android:id="@+id/divider6"
+            style="@style/Divider"
+            android:layout_alignParentLeft="true"
+            android:background="@color/Blue"
+            android:layout_below="@+id/pick_destination_point" />
+        
         
         <TextView
             android:id="@+id/radius_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_below="@+id/pick_destination_point"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="@string/trigger_radius" />
@@ -64,6 +75,7 @@
             android:id="@+id/divider6"
             style="@style/Divider"
             android:layout_alignParentLeft="true"
+            android:background="@color/Blue"
             android:layout_below="@+id/set_radius" />
         
         <TimePicker
@@ -73,13 +85,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_alignParentTop="false"
+            android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true" />
+        
+        <View
+            android:id="@+id/divider20"
+            style="@style/Divider"
+            android:layout_alignParentLeft="true"
+            android:background="@color/Blue"
+            android:layout_below="@+id/alarm_details_time_picker" />
 
         <EditText
             android:id="@+id/alarm_details_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alarm_details_time_picker"
+            android:layout_below="@+id/divider20"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:ems="15"
@@ -90,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/alarm_details_name"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:ems="15"
             android:hint="@string/detail_items" />
@@ -98,6 +118,8 @@
         <View
             android:id="@+id/divider2"
             style="@style/Divider"
+            android:layout_marginBottom="10dp"
+            android:background="@color/Blue"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/alarm_details_items" />
 
@@ -190,6 +212,7 @@
         <View
             android:id="@+id/divider4"
             style="@style/Divider"
+             android:background="@color/Blue"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/alarm_details_repeat_saturday" />
 
@@ -208,7 +231,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="@string/details_alarm_tone"
-                android:textSize="18sp" />
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/alarm_label_tone_selection"
@@ -222,6 +246,7 @@
         <View
             android:id="@+id/divider3"
             style="@style/Divider"
+            android:background="@color/Blue"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/alarm_ringtone_container" />
     </RelativeLayout>

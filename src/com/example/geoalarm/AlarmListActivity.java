@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class AlarmListActivity extends ListActivity {
 
@@ -53,6 +56,7 @@ public class AlarmListActivity extends ListActivity {
 				"This happens on top of the usual alarm setup.")
 		.setTitle("ABOUT ")
 		.setCancelable(true)
+		.setIcon(R.drawable.ic_launcher)
 		.setNegativeButton("OK", null)
 		.setPositiveButton("Help", new OnClickListener() {
 			@Override
@@ -76,6 +80,7 @@ public class AlarmListActivity extends ListActivity {
 				"5. To delete an alarm, long click on the alarm then select 'OK' on the dialogue box that appears.\n")
 		.setTitle("HELP ")
 		.setCancelable(true)
+		.setIcon(R.drawable.ic_launcher)
 		.setNegativeButton("OK", null)
 		.show();
 	}
@@ -108,11 +113,59 @@ public class AlarmListActivity extends ListActivity {
 				showHelpDialog();
 				break;
 			}
+			case R.id.action_review: {
+				showReview();
+				break;
+			}
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
 	
+	private void showReview() {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+				LinearLayout ll = new LinearLayout(this);
+				ll.setOrientation(1);
+				
+				final EditText input_comment = new EditText(this);
+				final EditText input_yourname = new EditText(this);
+				
+				input_comment.setHint("Comment/feedback here..");
+				input_yourname.setHint("Name here..");
+//				ll.addView(input_comment_label);
+				ll.addView(input_comment);
+//				ll.addView(input_yourname_label);
+				ll.addView(input_yourname);
+				
+				alert.setView(ll);
+				alert.setTitle("Feedback");
+				alert.setIcon(R.drawable.ic_launcher);
+				
+
+				alert.setPositiveButton("Post", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					if (input_comment.length() < 1) {
+						Toast.makeText(getApplicationContext(), "Not posted. Blank comment", Toast.LENGTH_LONG).show();
+					} else {
+						Toast.makeText(getApplicationContext(), "Thank you! Feedback sent", Toast.LENGTH_LONG).show();
+					}
+					
+					 
+				  }
+				});
+
+				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				  public void onClick(DialogInterface dialog, int whichButton) {
+				   
+				  }
+				});
+
+				alert.show();
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

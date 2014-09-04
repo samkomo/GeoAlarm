@@ -22,5 +22,11 @@
         android:icon="@drawable/ic_action_help"
         android:showAsAction="ifRoom"
         android:title="Help"/>
+    
+    <item
+        android:id="@+id/action_review"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Feedback"/>
 
 </menu>

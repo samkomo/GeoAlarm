@@ -287,6 +287,7 @@ public class AlarmDetailsActivity extends Activity {
 				"be triggered to remind you of the items in your alarm.\n" +
 				"This happens on top of the usual alarm setup.")
 		.setTitle("ABOUT ")
+		.setIcon(R.drawable.ic_launcher)
 		.setCancelable(true)
 		.setNegativeButton("OK", null)
 		.show();
@@ -305,7 +306,7 @@ public class AlarmDetailsActivity extends Activity {
 				"4. To add a location by dragging themarker, long click on the marker for 2secs then start dragging.\n" +
 				"5. To delete an alarm, long click on the alarm then select 'OK' on the dialogue box that appears.\n")
 		.setTitle("HELP ")
-		.setCancelable(true)
+		.setIcon(R.drawable.ic_launcher)
 		.setNegativeButton("OK", null)
 		.show();
 	}
